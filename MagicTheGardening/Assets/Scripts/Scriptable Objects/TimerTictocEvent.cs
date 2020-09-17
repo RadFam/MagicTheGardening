@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Game Event", menuName = "ScriptableObjects/Timer Tictoc Event", order = 1)] // 1
+[CreateAssetMenu(fileName = "New_Game_Event", menuName = "ScriptableObjects/Timer_Tictoc_Event", order = 1)] // 1
 public class TimerTictocEvent : ScriptableObject
 {
     private List<TimerTictocEventListener> listeners = new List<TimerTictocEventListener>(); // 3

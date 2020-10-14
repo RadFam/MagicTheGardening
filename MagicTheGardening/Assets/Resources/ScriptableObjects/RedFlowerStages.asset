@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bfe4704dd35afe40a378df05768a2c1, type: 3}
+  m_Name: RedFlowerStages
+  m_EditorClassIdentifier: 
+  growthStages: 4
+  plantName: RedFlower
+  plantView:
+  - {fileID: 4300000, guid: 56203e8ed01d7a440ae8244cce203784, type: 3}
+  - {fileID: 4300000, guid: 7ae7f742d4b874c4d813dbbf758e703b, type: 3}
+  - {fileID: 4300000, guid: e01543212ebdf4f4b9088dcba10b6dad, type: 3}
+  - {fileID: 4300000, guid: 70335f07285908646be5a51405049219, type: 3}
+  plantTex:
+  - {fileID: 2100000, guid: 379d59ed9a303ce45adc9f7a58432ed2, type: 2}
+  - {fileID: 2100000, guid: 2fafadd299c3dd04e919ae0d1af4c86a, type: 2}
+  - {fileID: 2100000, guid: 1d5017174a0fff24cab05dadf5affcb1, type: 2}
+  - {fileID: 2100000, guid: c64753c299c36ed4888db0915d724bab, type: 2}
+  plantGrowthSpeedGroundType_normal: 01000000030000000300000004000000
+  plantGrowthSpeedGroundType_stoned: 
+  plantGrowthSpeedGroundType_watered: 
+  productsCanGrow:
+  - {fileID: 11400000, guid: a85a9f27a15ea00409176f6b0fa23a11, type: 2}
+  productsCanGrowVols: 03000000
+  productsCanGrowProbabs:
+  - 1

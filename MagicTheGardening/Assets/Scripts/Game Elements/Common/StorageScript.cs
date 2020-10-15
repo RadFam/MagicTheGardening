@@ -22,7 +22,9 @@ namespace GameElement
 
             public void AddCount(int newCount)
             {
+                Debug.Log("Prev count: " + count.ToString());
                 count += newCount;
+                Debug.Log("After count: " + count.ToString());
             }
         }
 
@@ -50,7 +52,9 @@ namespace GameElement
             int ind = myStorage.FindIndex(x => x.product.productName == productName);
             if (ind >= 0)
             {
-                myStorage[ind].AddCount(value);
+                myProductStorage mps = new myProductStorage(myStorage[ind].product, myStorage[ind].count + value);
+                myStorage[ind] = mps;
+                //myStorage[ind].AddCount(value);
             }
             else
             {
@@ -71,7 +75,10 @@ namespace GameElement
                 int val = myStorage[ind].count;
                 if (val > value)
                 {
-                    myStorage[ind].AddCount(-1 * value);
+                    myProductStorage mps = new myProductStorage(myStorage[ind].product, myStorage[ind].count - 1);
+                    myStorage[ind] = mps;
+                    //myStorage[ind].AddCount(-1 * value);
+                    //Debug.Log("STORAGE RemoveProduct func, myStorage[ind].count: " + myStorage[ind].count.ToString());
                 }
                 else
                 {
@@ -108,7 +115,10 @@ namespace GameElement
                 }
                 else if (myStorage[ind].count > value)
                 {
-                    myStorage[ind].AddCount(-1 * value);
+                    myProductStorage mps = new myProductStorage(myStorage[ind].product, myStorage[ind].count - 1);
+                    myStorage[ind] = mps;
+
+                    //myStorage[ind].AddCount(-1 * value);
                     myMoneyStorage += GlobalGameData.instance.GetProductByName(productName).cost * value;
                 }
                 else if (myStorage[ind].count == value)

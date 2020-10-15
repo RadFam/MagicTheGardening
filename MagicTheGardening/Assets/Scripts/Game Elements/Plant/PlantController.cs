@@ -24,7 +24,7 @@ namespace GameElement
         {
             groundType = 0;
             growthTimer = 0;
-            LoadData(0);
+            //LoadData(0);
         }
 
         public void LoadData(int ground)
@@ -34,7 +34,7 @@ namespace GameElement
             groundType = ground;
             plantStages = plantGrowthData.growthStages;
 
-            meshFilter = gameObject.AddComponent<MeshFilter>();
+            meshFilter = gameObject.AddComponent<MeshFilter>(); Debug.Log("Plant mesh filter is: " + meshFilter);
             meshFilter.sharedMesh = plantGrowthData.plantView[currentStage];
             meshRendered = gameObject.AddComponent<MeshRenderer>();
             meshRendered.material = plantGrowthData.plantTex[currentStage];

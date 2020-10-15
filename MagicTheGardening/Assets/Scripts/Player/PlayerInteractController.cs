@@ -72,10 +72,17 @@ namespace PlayerController
                     interactObject.Connect(TypeOfInteraction.GroundPutProduct, this.gameObject);
                 }
 
+                if (PAC.GetAction == Actions.NoAction)
+                {
+                    interactObject.Connect(TypeOfInteraction.GroundGetProduct, this.gameObject); // Make SO "GroundGetProduct"
+                }
+
                 //interactObject.Connect(TypeOfInteraction.GroundPlow, this.gameObject); // Вот здесь нужно сделать зависимость от того, что в данный момент активно у игрока (!!!)
                 //interactObject.Connect(TypeOfInteraction.GrowndWater, this.gameObject); // Вот здесь нужно сделать зависимость от того, что в данный момент активно у игрока (!!!)
                 //interactObject.Connect(TypeOfInteraction.GroundPutProduct, this.gameObject); // Вот здесь нужно сделать зависимость от того, что в данный момент активно у игрока (!!!)
                 // And so on....
+
+                interactObject = null;
             }
         }
 

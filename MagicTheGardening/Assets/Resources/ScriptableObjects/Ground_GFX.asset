@@ -23,7 +23,7 @@ MonoBehaviour:
   unplowedSpeed_Max:
   - {x: 1, y: 25}
   unwateredSpeed_Max:
-  - {x: 1, y: 3}
+  - {x: 1, y: 25}
   unfertilizedSpeed_Max:
   - {x: 0, y: 100}
   unimproveOneSpeed_Max:

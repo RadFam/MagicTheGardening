@@ -34,7 +34,7 @@ namespace GameElement
         bool isImproved_1;
         bool isImproved_2;
 
-        int[] plowedChar = { 0, 0, 0 };
+        int[] plowedChar = { 0, 0, 0 }; // 0 - curr vol, 1 - decrease speed, 2 - max value;
         int[] wateredChar = { 0, 0, 0 };
         int[] fertilizedChar = { 0, 0, 0 };
         int[] improvedOneChar = { 0, 0, 0 };
@@ -219,7 +219,7 @@ namespace GameElement
             Destroy(plantObject.transform.GetChild(0).gameObject);
         }
 
-        void TakePlantGround()
+        public void TakePlantGround()
         {
             if (isPlanted)
             {
@@ -253,8 +253,11 @@ namespace GameElement
                 BaseDamagesControl baseDC = GetComponent<BaseDamagesControl>();
                 bool res = false;
 
-                res = baseDC.EvalInsectDamage();
-                res = baseDC.EvalMoleratDamage();
+                if (baseDC != null)
+                {
+                    res = baseDC.EvalInsectDamage();
+                    res = baseDC.EvalMoleratDamage();
+                }
 
                 if (res)
                 {
@@ -262,7 +265,7 @@ namespace GameElement
                 }
                 else
                 {
-                    plantObject.transform.GetChild(0).gameObject.GetComponent<PlantController>().OnTictocTimer();
+                    plantObject.transform.GetChild(0).gameObject.GetComponent<PlantController>().OnTictocTimer(); // here we need to check, if we have a plant
                 }
             }
 
@@ -272,7 +275,7 @@ namespace GameElement
         public bool AddPlowing()
         {
             isPloweed = true;
-            plowedChar[0] = plowedChar[1];
+            plowedChar[0] = plowedChar[2];
 
             if (isWatered)
             {
@@ -287,13 +290,21 @@ namespace GameElement
                 groundObject.GetComponent<Renderer>().material = groundGraphics.dryGroundMat[groundType];
             }
 
+            // Check if here is the plant - we must destroy plant
+            if (isPlanted)
+            {
+                DeplantGround();
+            }
+
             return true;
         }
 
         public bool AddWaterizing()
         {
             isWatered = true;
-            wateredChar[0] = wateredChar[1];
+            wateredChar[0] = wateredChar[2];
+
+            Debug.Log("Water parameters: " + wateredChar[0].ToString() + " " + wateredChar[1] + " " + wateredChar[2]);
 
             if (isPloweed)
             {
@@ -375,6 +386,7 @@ namespace GameElement
 
                 var plant = Instantiate(growthPlant, plantObject.transform) as PlantController;
                 plant.plantGrowthData = pgc;
+                plant.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
                 plant.LoadData(groundType);
 
                 if (isFertilized)

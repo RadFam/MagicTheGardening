@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using GameControllers;
 
 namespace PlayerController
@@ -38,7 +39,7 @@ namespace PlayerController
                 Interactible inter = hit.transform.GetComponent<Interactible>();
                 if (inter == null) continue;
 
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
                     Debug.Log("Was click to move and interact");
                     GetComponent<PlayerInteractController>().Interact(inter);
@@ -59,7 +60,7 @@ namespace PlayerController
             RaycastHit hit;
             if (Physics.Raycast(GetMouseRay(), out hit))
             {
-                if (Input.GetMouseButton(0))
+                if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
                     GetComponent<PlayerMoveControl>().StartMoveAction(hit.point);
                 }

@@ -219,11 +219,11 @@ namespace GameElement
             Destroy(plantObject.transform.GetChild(0).gameObject);
         }
 
-        public void TakePlantGround()
+        public void TakePlantGround(ref StorageScript SSc)
         {
             if (isPlanted)
             {
-                if (plantObject.transform.GetChild(0).gameObject.GetComponent<PlantController>().GetProducts())
+                if (plantObject.transform.GetChild(0).gameObject.GetComponent<PlantController>().GetProducts(ref SSc))
                 {
                     DeplantGround();
                 }

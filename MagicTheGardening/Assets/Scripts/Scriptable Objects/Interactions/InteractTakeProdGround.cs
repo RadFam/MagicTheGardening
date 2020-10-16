@@ -20,17 +20,7 @@ public class InteractTakeProdGround : Interaction
         SSc = clientObj.GetComponent<StorageScript>();
         if (SSc != null)
         {
-            // Check if Storage "hand" has ProductCommon object, and this products belong to Product_TypeTwo
-            // (i.e. has PlantGrowthCycle field)
-            ProductCommon PCm = SSc.OnHand;
-            if (PCm != null && PCm is Product_TypeTwo)
-            {
-                Product_TypeTwo PCm_two = PCm as Product_TypeTwo;
-                GSC.AddPlant(PCm_two.plantToGrow);
-                string res = SSc.FromHandToWorld();
-            }
+            GSC.TakePlantGround(ref SSc);
         }
-
-        GSC.TakePlantGround();
     }
 }

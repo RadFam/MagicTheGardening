@@ -16,6 +16,9 @@ namespace GameElement
         int growthTimer;
         List<int> plantStageGrowthSpeed;
 
+        bool canTakeProds = false;
+        List<int> productsThatGrow = new List<int>();
+
         MeshFilter meshFilter;
         MeshRenderer meshRendered;
 
@@ -38,6 +41,13 @@ namespace GameElement
             meshFilter.sharedMesh = plantGrowthData.plantView[currentStage];
             meshRendered = gameObject.AddComponent<MeshRenderer>();
             meshRendered.material = plantGrowthData.plantTex[currentStage];
+
+            canTakeProds = false;
+            productsThatGrow.Clear();
+            for (int i = 0; i < plantGrowthData.productsCanGrow.Count; ++i)
+            {
+                productsThatGrow.Add(0);
+            }
 
             SetPlantGrowthSpeeds();
         }
@@ -95,6 +105,12 @@ namespace GameElement
                 UpdatePlantView();
             }
 
+            if (currentStage == plantGrowthData.growthStages-1 && !canTakeProds)
+            {
+                Debug.Log("Plants have grown");
+                DefineGrownProducts();
+            }
+
             if (growthTimer > daysCounter) // растение "перезрело"
             {
                 // Need to send appropriate message to parenting ground
@@ -103,13 +119,23 @@ namespace GameElement
             }
         }
 
-        public bool GetProducts()
+        public bool GetProducts(ref StorageScript SSc)
         {
             if (currentStage == plantStages - 1)
             {
                 // Возвращаем плоды
                 // ................
                 //Destroy(gameObject);
+                for (int i = 0; i < productsThatGrow.Count; ++i)
+                {
+                    if (productsThatGrow[i] != 0)
+                    {
+                        SSc.AddProduct(plantGrowthData.productsCanGrow[i].productName, productsThatGrow[i]);
+                    }
+                }
+
+                //Destroy(gameObject);
+
                 return true;
             }
 
@@ -158,6 +184,20 @@ namespace GameElement
         public void FetusQuality()
         {
 
+        }
+
+        void DefineGrownProducts()
+        {
+            for (int i = 0; i < plantGrowthData.productsCanGrow.Count; ++i )
+            {
+                float rnd = Random.Range(0.0f, 1.0f);
+                if (rnd <= plantGrowthData.productsCanGrowProbabs[i])
+                {
+                    productsThatGrow[i] = plantGrowthData.productsCanGrowVols[i];
+                }
+            }
+
+            canTakeProds = true;
         }
     }
 }

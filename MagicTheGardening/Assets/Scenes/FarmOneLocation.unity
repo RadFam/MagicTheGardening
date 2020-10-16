@@ -1270,11 +1270,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e726a9d6407fee24f803b6dd5223f08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toi: 000000000100000005000000
+  toi: 00000000010000000500000004000000
   inter:
   - {fileID: 11400000, guid: c35d278d4bc17914eaec18df14a6f66f, type: 2}
   - {fileID: 11400000, guid: 144ff8e74d65cff498a5a7a12b9be821, type: 2}
   - {fileID: 11400000, guid: 5a1009784f8875d499d1a908d597c7e5, type: 2}
+  - {fileID: 11400000, guid: 06ae522645eb2e9408de6678727de09c, type: 2}
 --- !u!65 &1060534356
 BoxCollider:
   m_ObjectHideFlags: 0

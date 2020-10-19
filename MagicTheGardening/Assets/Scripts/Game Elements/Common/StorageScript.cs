@@ -176,5 +176,23 @@ namespace GameElement
 
             return toReturn;
         }
+
+        public int HasProduct(string prodName)
+        {
+            int stEl = myStorage.FindIndex(x => x.product.productName == prodName);
+            if (stEl >= 0)
+            {
+                return myStorage[stEl].count;
+            }
+   
+            return 0;
+        }
+
+        public void ClearStorage()
+        {
+            myStorage.Clear();
+            myMoneyStorage = 0;
+            handProduct = null;
+        }
     }
 }

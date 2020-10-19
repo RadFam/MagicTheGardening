@@ -24,6 +24,11 @@ namespace PlayerController
             UpdateAnimator();
         }
 
+        public void SetStoppingDistance(float dist)
+        {
+            navMesh.stoppingDistance = dist;
+        }
+
         public void StartMoveAction(Vector3 destination)
         {
             GetComponent<PlayerInteractController>().Cancel();
@@ -38,6 +43,7 @@ namespace PlayerController
 
         public void Stop()
         {
+            navMesh.destination = gameObject.transform.position;
             navMesh.isStopped = true;
         }
 

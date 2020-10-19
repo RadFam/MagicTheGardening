@@ -8,7 +8,7 @@ namespace PlayerController
     public class PlayerInteractController : MonoBehaviour
     {
         [SerializeField]
-        float interactRange = 2.0f;
+        float interactRange = 5.0f;
 
         Transform interactTarget;
         Interactible interactObject;
@@ -21,6 +21,7 @@ namespace PlayerController
         void Start()
         {
             PAC = gameObject.GetComponent<PlayerActionControl>();
+            GetComponent<PlayerMoveControl>().SetStoppingDistance(interactRange);
         }
 
         // Update is called once per frame

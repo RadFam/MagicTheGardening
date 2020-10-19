@@ -24,7 +24,7 @@ namespace GameElement
 
         public int groundType;
 
-        int unwateredMax = 3;
+        int unwateredMax = 3; // Maybe this parameter is worth to introduce into plant characteristics (!)
         int unwateredDays = 0;
 
         bool isPloweed;
@@ -263,7 +263,7 @@ namespace GameElement
                 {
                     DeplantGround();
                 }
-                else
+                else if (isPloweed && isWatered)
                 {
                     plantObject.transform.GetChild(0).gameObject.GetComponent<PlantController>().OnTictocTimer(); // here we need to check, if we have a plant
                 }
@@ -380,7 +380,8 @@ namespace GameElement
 
         public bool AddPlant(PlantGrowthCycle pgc)
         {
-            if (isPloweed && !isPlanted)
+            //if (isPloweed && !isPlanted)
+            if (!isPlanted)
             {
                 isPlanted = true;
 

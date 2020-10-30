@@ -26,7 +26,7 @@ namespace GameUI
             cam = Camera.main;
         }
 
-        public void ShowPlayerChest(ref StorageScript ssc_1, ref StorageScript ssc_2)
+        public void ShowPlayerChest(ref StorageScript ssc_1, ref StorageScript ssc_2) // player is the Subject(!)
         {
             SSc_obj = ssc_1;
             SSc_subj = ssc_2;
@@ -35,8 +35,8 @@ namespace GameUI
             Vector3 obj_pos = cam.WorldToScreenPoint(ssc_1.gameObject.transform.position);
             Vector3 subj_pos = cam.WorldToScreenPoint(ssc_2.gameObject.transform.position);
 
-            Vector2 deltaObj;
-            Vector2 deltaSubj;
+            Vector2 deltaObj = new Vector2(0.0f, 0.0f);
+            Vector2 deltaSubj = new Vector2(0.0f, 0.0f);
 
             if (obj_pos.x <= subj_pos.x && obj_pos.y >= subj_pos.y)
             {
@@ -59,6 +59,11 @@ namespace GameUI
                 deltaSubj = new Vector2(0.3f, 0.2f);
             }
 
+            playerPrefab.gameObject.SetActive(true);
+            playerPrefab.SetSelfScaling(deltaSubj);
+
+            chestPrefab.gameObject.SetActive(true);
+            chestPrefab.SetSelfScaling(deltaObj);
         }
 
         public void ShowPlayerSales()

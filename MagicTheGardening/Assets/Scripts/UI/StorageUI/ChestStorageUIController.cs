@@ -8,8 +8,12 @@ namespace GameUI
     public class ChestStorageUIController : MonoBehaviour
     {
 
+        public DragAndDropScript microElementPrefab;
+
         int cellsWidth;
         int cellsHeight;
+
+        int cntr = 0;
 
         // Magic coefficients
         float widthCoeff = 2.5f;
@@ -29,6 +33,13 @@ namespace GameUI
 
             myRectTransform = GetComponent<RectTransform>();
             myCanvas = FindObjectOfType<Canvas>();
+
+            cntr = 0;
+        }
+
+        void OnEnable()
+        {
+            gameObject.transform.parent = myCanvas.transform;
         }
 
         public void SetSelfScaling(Vector2 centerCoords)
@@ -49,6 +60,19 @@ namespace GameUI
                 LayoutElement le = me.GetComponent<LayoutElement>();
                 le.flexibleHeight = (int)(myHeight * 0.978f / cellsHeight);
                 le.flexibleWidth = (int)(myHeight * 0.978f / cellsWidth);
+            }
+        }
+
+        public void SetAnotherDDElement(Sprite spr)
+        {
+            if (cntr < innerElements.Count)
+            {
+                DragAndDropScript ddElement = Instantiate(microElementPrefab);
+                ddElement.transform.parent = innerElements[cntr].transform;
+
+                ddElement.SetImage(spr, cntr, 1);
+
+                cntr++;
             }
         }
     }

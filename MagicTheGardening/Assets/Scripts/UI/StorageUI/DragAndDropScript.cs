@@ -8,6 +8,31 @@ namespace GameUI
 {
     public class DragAndDropScript : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
+        public int myNumberInStorage;
+        public int myOwnerCode; // 1 - object, 2 - subject
+
+        RectTransform myRectangle;
+
+        public RectTransform MyRect
+        {
+            get { return myRectangle; }
+            set { myRectangle = value; }
+        }
+
+        public void SetImage(Sprite img, int storageNum, int storageOwn)
+        {
+            Image spr = GetComponent<Image>();
+            spr.sprite = img;
+            myNumberInStorage = storageNum;
+            myOwnerCode = storageOwn;
+        }
+
+        public void ResetImage()
+        {
+            Image spr = GetComponent<Image>();
+            spr.sprite = null;
+        }
+        
         public void OnDrag(PointerEventData eventData)
         {
 

@@ -908,6 +908,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8889a03a1a68d254689958c88ac76be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myNumberInStorage: 0
+  myOwnerCode: 0
 --- !u!114 &366978829
 MonoBehaviour:
   m_ObjectHideFlags: 0

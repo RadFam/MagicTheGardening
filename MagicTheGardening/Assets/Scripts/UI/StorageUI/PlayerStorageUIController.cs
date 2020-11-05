@@ -25,6 +25,8 @@ namespace GameUI
         [SerializeField]
         List<GameObject> innerElements = new List<GameObject>();
 
+        List<GameObject> ddElements = new List<GameObject>();
+
         // Use this for initialization
         void Start()
         {
@@ -40,6 +42,28 @@ namespace GameUI
         void OnEnable()
         {
             gameObject.transform.parent = myCanvas.transform;
+        }
+
+        void OnDisable()
+        {
+            // Destroy all DnD Elements
+            foreach (GameObject go in ddElements)
+            {
+                Destroy(go);
+            }
+
+            ddElements.Clear();
+
+            /*
+            foreach (GameObject go in innerElements)
+            {
+                GameObject goCh = go.transform.GetChild(0).gameObject;
+                if (goCh != null)
+                {
+                    Destroy(goCh);
+                }
+            }
+             * */
         }
 
         public void SetSelfScaling(Vector2 centerCoords)
@@ -69,8 +93,39 @@ namespace GameUI
             {
                 DragAndDropScript ddElement = Instantiate(microElementPrefab);
                 ddElement.transform.parent = innerElements[cntr].transform;
+                ddElement.MyCanvas = myCanvas;
 
                 ddElement.SetImage(spr, cntr, 2);
+                ddElements.Add(ddElement.gameObject);
+
+                cntr++;
+            }
+        }
+
+        public bool PlusDDElement(GameObject go)
+        {
+            if (ddElements.Count < innerElements.Count)
+            {
+                ddElements.Add(go);
+                return true;
+            }
+            return false;
+        }
+
+        public void MinusDDElement(int elNum)
+        {
+            ddElements.RemoveAt(elNum);
+        }
+
+        public void RearrangeDDelements()
+        {
+            int cntr = 0;
+
+            foreach (GameObject go in ddElements)
+            {
+                go.transform.parent = innerElements[cntr].transform;
+                go.GetComponent<DragAndDropScript>().myNumberInStorage = cntr; // Don`t know if it will work
+                go.GetComponent<DragAndDropScript>().myOwnerCode = 2;
 
                 cntr++;
             }

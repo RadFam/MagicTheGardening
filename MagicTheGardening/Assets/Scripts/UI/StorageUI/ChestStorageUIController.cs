@@ -42,6 +42,19 @@ namespace GameUI
             gameObject.transform.parent = myCanvas.transform;
         }
 
+        void OnDisable()
+        {
+            // Destroy all DnD Elements
+            foreach (GameObject go in innerElements)
+            {
+                GameObject goCh = go.transform.GetChild(0).gameObject;
+                if (goCh != null)
+                {
+                    Destroy(goCh);
+                }
+            }
+        }
+
         public void SetSelfScaling(Vector2 centerCoords)
         {
             myRectTransform.anchoredPosition = centerCoords;

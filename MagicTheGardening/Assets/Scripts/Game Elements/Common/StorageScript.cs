@@ -39,6 +39,23 @@ namespace GameElement
             set { handProduct = value; }
         }
 
+        public int GetStorageLength()
+        {
+            return myStorage.Count;
+        }
+
+        public ProductCommon GetStorageProduct(int num)
+        {
+            if (num < myStorage.Count)
+            {
+                return myStorage[num].product;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         // Use this for initialization
         void Start()
         {

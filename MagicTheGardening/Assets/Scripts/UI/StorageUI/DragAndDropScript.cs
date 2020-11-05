@@ -12,6 +12,13 @@ namespace GameUI
         public int myOwnerCode; // 1 - object, 2 - subject
 
         RectTransform myRectangle;
+        Canvas myCanvas;
+
+        public Canvas MyCanvas
+        {
+            get { return myCanvas; }
+            set { myCanvas = value; }
+        }
 
         public RectTransform MyRect
         {
@@ -35,7 +42,7 @@ namespace GameUI
         
         public void OnDrag(PointerEventData eventData)
         {
-
+            myRectangle.anchoredPosition += eventData.delta / myCanvas.scaleFactor;
         }
 
         public void OnBeginDrag(PointerEventData eventData)

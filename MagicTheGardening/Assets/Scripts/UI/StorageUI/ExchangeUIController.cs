@@ -61,9 +61,19 @@ namespace GameUI
 
             playerPrefab.gameObject.SetActive(true);
             playerPrefab.SetSelfScaling(deltaSubj);
+            int tmp = SSc_subj.GetStorageLength();
+            for (int i = 0; i < tmp; ++i)
+            {
+                playerPrefab.SetAnotherDDElement(SSc_subj.GetStorageProduct(i).productSprite);
+            }
 
             chestPrefab.gameObject.SetActive(true);
             chestPrefab.SetSelfScaling(deltaObj);
+            tmp = SSc_obj.GetStorageLength();
+            for (int i = 0; i < tmp; ++i)
+            {
+                chestPrefab.SetAnotherDDElement(SSc_obj.GetStorageProduct(i).productSprite);
+            }
         }
 
         public void ShowPlayerSales()

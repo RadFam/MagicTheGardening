@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GameUI
 {
-    public class PlayerStorageUIController : MonoBehaviour
+    public class PlayerStorageUIController : AbstractStorageUIController
     {
 
         public DragAndDropScript microElementPrefab;
@@ -66,7 +66,7 @@ namespace GameUI
              * */
         }
 
-        public void SetSelfScaling(Vector2 centerCoords)
+        public override void SetSelfScaling(Vector2 centerCoords) // produced on gameObject initiation
         {
             myRectTransform.anchoredPosition = centerCoords;
             float myWidth = (int)myCanvas.GetComponent<RectTransform>().rect.width / widthCoeff;
@@ -87,7 +87,7 @@ namespace GameUI
             }
         }
 
-        public void SetAnotherDDElement(Sprite spr)
+        public override void SetAnotherDDElement(Sprite spr) // produced on gameObject initiation
         {
             if (cntr < innerElements.Count)
             {
@@ -102,7 +102,7 @@ namespace GameUI
             }
         }
 
-        public bool PlusDDElement(GameObject go)
+        public override bool PlusDDElement(GameObject go) // when DnD element is dropped
         {
             if (ddElements.Count < innerElements.Count)
             {
@@ -112,12 +112,12 @@ namespace GameUI
             return false;
         }
 
-        public void MinusDDElement(int elNum)
+        public override void MinusDDElement(int elNum) // when DnD element is dropped
         {
             ddElements.RemoveAt(elNum);
         }
 
-        public void RearrangeDDelements()
+        public override void RearrangeDDelements() // when DnD element is dropped
         {
             int cntr = 0;
 

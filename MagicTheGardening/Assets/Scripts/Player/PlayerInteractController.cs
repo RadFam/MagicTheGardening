@@ -75,7 +75,14 @@ namespace PlayerController
 
                 if (PAC.GetAction == Actions.NoAction)
                 {
-                    interactObject.Connect(TypeOfInteraction.GroundGetProduct, this.gameObject); // Make SO "GroundGetProduct"
+                    if (interactObject.gameObject.name == "Ground")
+                    {
+                        interactObject.Connect(TypeOfInteraction.GroundGetProduct, this.gameObject); // Make SO "GroundGetProduct"
+                    }
+                    if (interactObject.gameObject.name == "Chest")
+                    {
+                        interactObject.Connect(TypeOfInteraction.ExchangeItem, this.gameObject);
+                    }
                 }
 
                 //interactObject.Connect(TypeOfInteraction.GroundPlow, this.gameObject); // Вот здесь нужно сделать зависимость от того, что в данный момент активно у игрока (!!!)

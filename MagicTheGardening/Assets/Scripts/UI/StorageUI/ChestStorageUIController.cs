@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GameUI
 {
-    public class ChestStorageUIController : MonoBehaviour
+    public class ChestStorageUIController : AbstractStorageUIController
     {
 
         public DragAndDropScript microElementPrefab;
@@ -24,6 +24,8 @@ namespace GameUI
 
         [SerializeField]
         List<GameObject> innerElements = new List<GameObject>();
+
+        List<GameObject> ddElements = new List<GameObject>();
 
         // Use this for initialization
         void Start()
@@ -45,6 +47,14 @@ namespace GameUI
         void OnDisable()
         {
             // Destroy all DnD Elements
+            foreach (GameObject go in ddElements)
+            {
+                Destroy(go);
+            }
+
+            ddElements.Clear();
+
+            /*
             foreach (GameObject go in innerElements)
             {
                 GameObject goCh = go.transform.GetChild(0).gameObject;
@@ -53,9 +63,10 @@ namespace GameUI
                     Destroy(goCh);
                 }
             }
+             * */
         }
 
-        public void SetSelfScaling(Vector2 centerCoords)
+        public override void SetSelfScaling(Vector2 centerCoords)
         {
             myRectTransform.anchoredPosition = centerCoords;
             float myWidth = (int)myCanvas.GetComponent<RectTransform>().rect.width / widthCoeff;
@@ -76,14 +87,45 @@ namespace GameUI
             }
         }
 
-        public void SetAnotherDDElement(Sprite spr)
+        public override void SetAnotherDDElement(Sprite spr)
         {
             if (cntr < innerElements.Count)
             {
                 DragAndDropScript ddElement = Instantiate(microElementPrefab);
                 ddElement.transform.parent = innerElements[cntr].transform;
+                ddElement.MyCanvas = myCanvas;
 
                 ddElement.SetImage(spr, cntr, 1);
+                ddElements.Add(ddElement.gameObject);
+
+                cntr++;
+            }
+        }
+
+        public override bool PlusDDElement(GameObject go) // when DnD element is dropped
+        {
+            if (ddElements.Count < innerElements.Count)
+            {
+                ddElements.Add(go);
+                return true;
+            }
+            return false;
+        }
+
+        public override void MinusDDElement(int elNum) // when DnD element is dropped
+        {
+            ddElements.RemoveAt(elNum);
+        }
+
+        public override void RearrangeDDelements() // when DnD element is dropped
+        {
+            int cntr = 0;
+
+            foreach (GameObject go in ddElements)
+            {
+                go.transform.parent = innerElements[cntr].transform;
+                go.GetComponent<DragAndDropScript>().myNumberInStorage = cntr; // Don`t know if it will work
+                go.GetComponent<DragAndDropScript>().myOwnerCode = 1;
 
                 cntr++;
             }

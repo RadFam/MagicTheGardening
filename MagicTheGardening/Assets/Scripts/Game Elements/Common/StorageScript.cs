@@ -56,6 +56,18 @@ namespace GameElement
             }
         }
 
+        public int GetStorageProductVol(int num)
+        {
+            if (num < myStorage.Count)
+            {
+                return myStorage[num].count;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         // Use this for initialization
         void Start()
         {

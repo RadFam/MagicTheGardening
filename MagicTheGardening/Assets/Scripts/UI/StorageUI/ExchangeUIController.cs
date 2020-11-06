@@ -15,10 +15,28 @@ namespace GameUI
         public PlayerStorageUIController playerPrefab;
         public ChestStorageUIController chestPrefab;
         public SalesmanStorageUIController salesPrefab;
+
+        public AbstractStorageUIController objPrefab;
+        public AbstractStorageUIController subjPrefab;
+
         public Button exitButton;
 
         StorageScript SSc_obj;
         StorageScript SSc_subj;
+
+        GameObject rectObj;
+        GameObject rectSubj;
+
+        public GameObject RectObj
+        {
+            get { return rectObj; }
+            set { rectObj = value; }
+        }
+        public GameObject RectSubj
+        {
+            get { return rectSubj; }
+            set { rectSubj = value; }
+        }
 
         // Use this for initialization
         void Start()
@@ -30,6 +48,9 @@ namespace GameUI
         {
             SSc_obj = ssc_1;
             SSc_subj = ssc_2;
+
+            objPrefab = chestPrefab;
+            subjPrefab = playerPrefab;
 
             // Instantiate storage panels by the placement of objects
             Vector3 obj_pos = cam.WorldToScreenPoint(ssc_1.gameObject.transform.position);
@@ -74,11 +95,38 @@ namespace GameUI
             {
                 chestPrefab.SetAnotherDDElement(SSc_obj.GetStorageProduct(i).productSprite);
             }
+
+            rectSubj = playerPrefab.gameObject;
+            rectObj = chestPrefab.gameObject;
         }
 
         public void ShowPlayerSales()
         {
 
+        }
+
+        public void PutObjectIntoStash(int SObj, int dndStorageNum) // 1 - to subject menu, 2 - to object menu
+        {
+            // Here we suppose, that we put object from from one stash to another
+            if (SObj == 1)
+            {
+                // Get item from object storage and put it into subject storage
+                string prName = SSc_obj.GetStorageProduct(dndStorageNum).productName;
+                int prNum = SSc_obj.GetStorageProductVol(dndStorageNum);
+                SSc_obj.RemoveProduct(prName, prNum);
+                SSc_subj.AddProduct(prName, prNum);
+            }
+            else
+            {
+                // Get item from subject storage and put it into object storage
+                string prName = SSc_subj.GetStorageProduct(dndStorageNum).productName;
+                int prNum = SSc_subj.GetStorageProductVol(dndStorageNum);
+                SSc_subj.RemoveProduct(prName, prNum);
+                SSc_obj.AddProduct(prName, prNum);
+            }
+
+            objPrefab.RearrangeDDelements();
+            subjPrefab.RearrangeDDelements();
         }
     }
 }

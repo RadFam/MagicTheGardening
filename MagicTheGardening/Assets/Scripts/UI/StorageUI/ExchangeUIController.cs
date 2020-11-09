@@ -41,7 +41,14 @@ namespace GameUI
         // Use this for initialization
         void Start()
         {
-            cam = Camera.main;
+            cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        }
+
+        public void OnCloseStorages()
+        {
+            playerPrefab.gameObject.SetActive(false);
+            chestPrefab.gameObject.SetActive(false);
+            //salesPrefab.gameObject.SetActive(false);
         }
 
         public void ShowPlayerChest(ref StorageScript ssc_1, ref StorageScript ssc_2) // player is the Subject(!)
@@ -52,9 +59,13 @@ namespace GameUI
             objPrefab = chestPrefab;
             subjPrefab = playerPrefab;
 
+            //Debug.Log("Camera: " + cam + "  Object: " + SSc_obj + "  Subject: " + SSc_subj);
+
             // Instantiate storage panels by the placement of objects
-            Vector3 obj_pos = cam.WorldToScreenPoint(ssc_1.gameObject.transform.position);
-            Vector3 subj_pos = cam.WorldToScreenPoint(ssc_2.gameObject.transform.position);
+            Vector3 obj_pos = cam.WorldToScreenPoint(SSc_obj.gameObject.transform.position);
+            Vector3 subj_pos = cam.WorldToScreenPoint(SSc_subj.gameObject.transform.position);
+
+            //Debug.Log("obj_pos: " + obj_pos + "   subj_pos: " + subj_pos);
 
             Vector2 deltaObj = new Vector2(0.0f, 0.0f);
             Vector2 deltaSubj = new Vector2(0.0f, 0.0f);
@@ -80,16 +91,22 @@ namespace GameUI
                 deltaSubj = new Vector2(0.3f, 0.2f);
             }
 
+            //Debug.Log("deltaObj: " + deltaObj + "   deltaSubj: " + deltaSubj);
+
             playerPrefab.gameObject.SetActive(true);
             playerPrefab.SetSelfScaling(deltaSubj);
+
             int tmp = SSc_subj.GetStorageLength();
+            Debug.Log("SSc_subj count: " + tmp.ToString());
             for (int i = 0; i < tmp; ++i)
             {
                 playerPrefab.SetAnotherDDElement(SSc_subj.GetStorageProduct(i).productSprite);
             }
 
+
             chestPrefab.gameObject.SetActive(true);
             chestPrefab.SetSelfScaling(deltaObj);
+
             tmp = SSc_obj.GetStorageLength();
             for (int i = 0; i < tmp; ++i)
             {

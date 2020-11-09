@@ -113,8 +113,10 @@ namespace GameUI
             if (cntr <= innerElements.Count)
             {
                 DragAndDropScript ddElement = Instantiate(microElementPrefab);
-                ddElement.transform.parent = innerElements[cntr].transform;
-                ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+                //ddElement.transform.parent = innerElements[cntr].transform;
+                //ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
+                ddElement.transform.parent = myCanvas.transform;
+                ddElement.transform.position = innerElements[cntr].transform.position;
                 ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
                 ddElement.GetComponent<RectTransform>().sizeDelta = innerElements[cntr].GetComponent<RectTransform>().sizeDelta;
                 ddElement.MyCanvas = myCanvas;

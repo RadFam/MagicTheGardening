@@ -15,6 +15,7 @@ namespace GameUI
         public PlayerStorageUIController playerPrefab;
         public ChestStorageUIController chestPrefab;
         public SalesmanStorageUIController salesPrefab;
+        public GameObject exchangePrefab;
 
         public AbstractStorageUIController objPrefab;
         public AbstractStorageUIController subjPrefab;
@@ -49,10 +50,14 @@ namespace GameUI
             playerPrefab.gameObject.SetActive(false);
             chestPrefab.gameObject.SetActive(false);
             //salesPrefab.gameObject.SetActive(false);
+
+            exchangePrefab.gameObject.SetActive(false);
         }
 
         public void ShowPlayerChest(ref StorageScript ssc_1, ref StorageScript ssc_2) // player is the Subject(!)
         {
+            exchangePrefab.gameObject.SetActive(true);
+
             SSc_obj = ssc_1;
             SSc_subj = ssc_2;
 

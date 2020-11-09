@@ -14,6 +14,10 @@ namespace GameUI
         RectTransform myRectangle;
         Canvas myCanvas;
 
+        void Awake()
+        {
+            myRectangle = gameObject.GetComponent<RectTransform>();
+        }
         public Canvas MyCanvas
         {
             get { return myCanvas; }
@@ -42,22 +46,23 @@ namespace GameUI
         
         public void OnDrag(PointerEventData eventData)
         {
+            Debug.Log("OnDrag starts");
             myRectangle.anchoredPosition += eventData.delta / myCanvas.scaleFactor;
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-
+            //Debug.Log("OnBeginDrag starts");
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-
+            //Debug.Log("OnEndDrag starts");
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-
+            //Debug.Log("OnPointerDown starts");
         }
     }
 }

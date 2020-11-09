@@ -22,8 +22,8 @@ public class InteractExchangeStorages : Interaction
 
     public override void React()
     {
-        SSc_subj = parentObj.GetComponent<StorageScript>();
-        SSc_obj = clientObj.GetComponent<StorageScript>();
+        SSc_obj = parentObj.GetComponent<StorageScript>();
+        SSc_subj = clientObj.GetComponent<StorageScript>();
 
         if (SSc_subj != null && SSc_obj != null)
         {

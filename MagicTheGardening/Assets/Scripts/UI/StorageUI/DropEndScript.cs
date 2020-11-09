@@ -21,6 +21,8 @@ namespace GameUI
         {
             if (eventData.pointerDrag != null)
             {
+                Debug.Log("OnDrop ends");
+
                 // Check, which of two storage rectangles is closer to eventData.pointerDrag
                 float distToSubj = Vector2.Distance(eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition, exchangeCtrl.RectSubj.GetComponent<RectTransform>().anchoredPosition);
                 float distToObj = Vector2.Distance(eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition, exchangeCtrl.RectObj.GetComponent<RectTransform>().anchoredPosition);

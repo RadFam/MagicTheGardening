@@ -88,6 +88,7 @@ namespace GameElement
             else
             {
                 myProductStorage mPS = new myProductStorage (GlobalGameData.instance.GetProductByName(productName), value);
+                myStorage.Add(mPS);
             }
         }
 

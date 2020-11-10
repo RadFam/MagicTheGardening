@@ -46,7 +46,7 @@ namespace GameUI
         
         public void OnDrag(PointerEventData eventData)
         {
-            Debug.Log("OnDrag starts");
+            //Debug.Log("OnDrag starts");
             myRectangle.anchoredPosition += eventData.delta / myCanvas.scaleFactor;
         }
 

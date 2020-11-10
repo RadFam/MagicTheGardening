@@ -14,7 +14,7 @@ namespace GameUI
         // Use this for initialization
         void Start()
         {
-            exchangeCtrl = gameObject.GetComponent<ExchangeUIController>();
+            exchangeCtrl = FindObjectOfType<ExchangeUIController>();
         }
 
         public void OnDrop(PointerEventData eventData)
@@ -22,7 +22,7 @@ namespace GameUI
             if (eventData.pointerDrag != null)
             {
                 Debug.Log("OnDrop ends");
-
+                Debug.Log("exchangeCtrl.RectSubj " + exchangeCtrl.RectSubj);
                 // Check, which of two storage rectangles is closer to eventData.pointerDrag
                 float distToSubj = Vector2.Distance(eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition, exchangeCtrl.RectSubj.GetComponent<RectTransform>().anchoredPosition);
                 float distToObj = Vector2.Distance(eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition, exchangeCtrl.RectObj.GetComponent<RectTransform>().anchoredPosition);
@@ -57,10 +57,10 @@ namespace GameUI
                     }
                     else  // from Players Rect to Object Rect
                     {
-                        bool ans = exchangeCtrl.RectSubj.GetComponent<PlayerStorageUIController>().PlusDDElement(eventData.pointerDrag);
+                        bool ans = exchangeCtrl.RectSubj.GetComponent<AbstractStorageUIController>().PlusDDElement(eventData.pointerDrag);
                         if (ans)
                         {
-                            exchangeCtrl.RectObj.GetComponent<AbstractStorageUIController>().MinusDDElement(eventData.pointerDrag.GetComponent<DragAndDropScript>().myNumberInStorage);
+                            exchangeCtrl.RectObj.GetComponent<PlayerStorageUIController>().MinusDDElement(eventData.pointerDrag.GetComponent<DragAndDropScript>().myNumberInStorage);
                             exchangeCtrl.PutObjectIntoStash(2, eventData.pointerDrag.GetComponent<DragAndDropScript>().myNumberInStorage);
                         }
                         else

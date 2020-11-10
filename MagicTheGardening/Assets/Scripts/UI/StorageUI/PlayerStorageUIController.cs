@@ -145,15 +145,18 @@ namespace GameUI
 
         public override void RearrangeDDelements() // when DnD element is dropped
         {
-            int cntr = 0;
+            int cntrr = 0;
 
             foreach (GameObject go in ddElements)
             {
-                go.transform.parent = innerElements[cntr].transform;
-                go.GetComponent<DragAndDropScript>().myNumberInStorage = cntr; // Don`t know if it will work
+                //go.transform.parent = innerElements[cntr].transform;
+                go.transform.parent = myCanvas.transform;
+                go.transform.position = innerElements[cntrr].transform.position;
+                go.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                go.GetComponent<DragAndDropScript>().myNumberInStorage = cntrr; // Don`t know if it will work
                 go.GetComponent<DragAndDropScript>().myOwnerCode = 2;
 
-                cntr++;
+                cntrr++;
             }
         }
     }

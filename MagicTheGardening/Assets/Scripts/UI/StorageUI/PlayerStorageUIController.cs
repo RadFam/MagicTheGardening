@@ -113,10 +113,10 @@ namespace GameUI
             if (cntr <= innerElements.Count)
             {
                 DragAndDropScript ddElement = Instantiate(microElementPrefab);
-                //ddElement.transform.parent = innerElements[cntr].transform;
-                //ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
-                ddElement.transform.parent = myCanvas.transform;
-                ddElement.transform.position = innerElements[cntr].transform.position;
+                ddElement.transform.parent = innerElements[cntr].transform;
+                ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
+                //ddElement.transform.parent = myCanvas.transform;
+                //ddElement.transform.position = innerElements[cntr].transform.position;
                 ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
                 ddElement.GetComponent<RectTransform>().sizeDelta = innerElements[cntr].GetComponent<RectTransform>().sizeDelta;
                 ddElement.MyCanvas = myCanvas;
@@ -149,10 +149,12 @@ namespace GameUI
 
             foreach (GameObject go in ddElements)
             {
-                //go.transform.parent = innerElements[cntr].transform;
-                go.transform.parent = myCanvas.transform;
-                go.transform.position = innerElements[cntrr].transform.position;
-                go.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                go.transform.parent = innerElements[cntrr].transform;
+                go.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
+                Debug.Log("go.name " + go.name + "  localCoords " + go.transform.localPosition);
+                //go.transform.parent = myCanvas.transform;
+                //go.transform.position = innerElements[cntrr].transform.position;
+                //go.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
                 go.GetComponent<DragAndDropScript>().myNumberInStorage = cntrr; // Don`t know if it will work
                 go.GetComponent<DragAndDropScript>().myOwnerCode = 2;
 

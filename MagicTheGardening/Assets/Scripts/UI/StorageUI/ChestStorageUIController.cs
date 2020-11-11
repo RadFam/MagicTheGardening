@@ -124,10 +124,10 @@ namespace GameUI
             if (cntr <= innerElements.Count)
             {
                 DragAndDropScript ddElement = Instantiate(microElementPrefab);
-                //ddElement.transform.parent = innerElements[cntr].transform;
-                //ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
-                ddElement.transform.parent = myCanvas.transform;
-                ddElement.transform.position = innerElements[cntr].transform.position;
+                ddElement.transform.parent = innerElements[cntr].transform;
+                ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
+                //ddElement.transform.parent = myCanvas.transform;
+                //ddElement.transform.position = innerElements[cntr].transform.position;
                 ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
                 ddElement.GetComponent<RectTransform>().sizeDelta = innerElements[cntr].GetComponent<RectTransform>().sizeDelta;
                 ddElement.MyCanvas = myCanvas;
@@ -156,15 +156,17 @@ namespace GameUI
 
         public override void RearrangeDDelements() // when DnD element is dropped
         {
-            int cntr = 0;
+            int cntrr = 0;
 
             foreach (GameObject go in ddElements)
             {
-                go.transform.parent = innerElements[cntr].transform;
-                go.GetComponent<DragAndDropScript>().myNumberInStorage = cntr; // Don`t know if it will work
+                go.transform.parent = innerElements[cntrr].transform;
+                go.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
+                //Debug.Log("go.name " + go.name + "  localCoords " + go.transform.localPosition);
+                go.GetComponent<DragAndDropScript>().myNumberInStorage = cntrr; // Don`t know if it will work
                 go.GetComponent<DragAndDropScript>().myOwnerCode = 1;
 
-                cntr++;
+                cntrr++;
             }
         }
     }

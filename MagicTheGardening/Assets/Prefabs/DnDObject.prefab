@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 222180607938994836}
   - component: {fileID: 114053708839208362}
   - component: {fileID: 114157438143418836}
+  - component: {fileID: 114364663393365216}
   m_Layer: 5
   m_Name: DnDObject
   m_TagString: Untagged
@@ -69,6 +70,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myNumberInStorage: 0
   myOwnerCode: 0
+--- !u!114 &114364663393365216
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1281030950096562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 3
 --- !u!222 &222180607938994836
 CanvasRenderer:
   m_ObjectHideFlags: 1

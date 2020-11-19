@@ -102,7 +102,7 @@ namespace GameUI
             playerPrefab.SetSelfScaling(deltaSubj);
 
             int tmp = SSc_subj.GetStorageLength();
-            Debug.Log("SSc_subj count: " + tmp.ToString());
+            //Debug.Log("SSc_subj count: " + tmp.ToString());
             for (int i = 0; i < tmp; ++i)
             {
                 playerPrefab.SetAnotherDDElement(SSc_subj.GetStorageProduct(i).productSprite);
@@ -146,9 +146,9 @@ namespace GameUI
                 SSc_subj.RemoveProduct(prName, prNum);
                 SSc_obj.AddProduct(prName, prNum);
             }
-
-            objPrefab.RearrangeDDelements();
+            
             subjPrefab.RearrangeDDelements();
+            objPrefab.RearrangeDDelements();
         }
     }
 }

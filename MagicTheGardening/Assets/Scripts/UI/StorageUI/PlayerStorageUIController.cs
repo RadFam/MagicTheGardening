@@ -8,7 +8,8 @@ namespace GameUI
     public class PlayerStorageUIController : AbstractStorageUIController
     {
 
-        public DragAndDropScript microElementPrefab;
+        //public DragAndDropScript microElementPrefab;
+        public GameObject microElementPrefab;
 
         int cellsWidth;
         int cellsHeight;
@@ -20,12 +21,18 @@ namespace GameUI
         float heightCoeff = 2.7f;
 
         RectTransform myRectTransform;
+        GridLayoutGroup glg;
         Canvas myCanvas;
 
         [SerializeField]
         List<GameObject> innerElements; // = new List<GameObject>();
 
+        [SerializeField]
         List<GameObject> ddElements = new List<GameObject>();
+        List<Vector2> ddElementsPositions = new List<Vector2>();
+
+        [SerializeField]
+        GameObject emptyStub;
 
         // Use this for initialization
         void Start()
@@ -46,10 +53,13 @@ namespace GameUI
 
             myRectTransform = GetComponent<RectTransform>();
             myCanvas = FindObjectOfType<Canvas>();
+            glg = GetComponent<GridLayoutGroup>();
+            ddElementsPositions.Clear();
 
+            emptyStub.transform.SetParent(myCanvas.transform, false);
+            emptyStub.transform.localScale = new Vector3(0,0,0);
+            ddElements.Add(emptyStub);
             cntr = 0;
-
-            //gameObject.transform.parent = myCanvas.transform;
         }
 
         void OnDisable()
@@ -77,9 +87,7 @@ namespace GameUI
         public override void SetSelfScaling(Vector2 centerCoords) // produced on gameObject initiation
         {
             Vector2 canvasScale = myCanvas.GetComponent<CanvasScaler>().referenceResolution;
-            //Debug.Log("canvasScale: " + canvasScale);
             Vector2 canvasSize = new Vector2(myCanvas.GetComponent<RectTransform>().rect.width, myCanvas.GetComponent<RectTransform>().rect.height);
-            //Debug.Log("canvasSize: " + canvasSize);
 
             Vector2 newCenterCoordinates = new Vector2((centerCoords.x-0.5f) * canvasSize.x, (centerCoords.y-0.5f) * canvasSize.y);
 
@@ -90,15 +98,15 @@ namespace GameUI
             float myWidth = (int)(deltaSizeCoeff * cellsWidth);
             float myHeight = (int)(deltaSizeCoeff * cellsHeight);
 
-            //float myWidth = (int)myCanvas.GetComponent<RectTransform>().rect.width / widthCoeff;
-            //float myHeight = (int)myCanvas.GetComponent<RectTransform>().rect.height / heightCoeff;
             myRectTransform.sizeDelta = new Vector2(myWidth, myHeight);
-
-            GridLayoutGroup glg = GetComponent<GridLayoutGroup>();
+            
             glg.cellSize = new Vector2(myWidth * 0.9f / cellsWidth, myHeight * 0.9f / cellsHeight);
             glg.padding.left = (int)(myWidth * 0.1f / (cellsWidth+1));
             glg.padding.top = (int)(myHeight * 0.1f / (cellsHeight+1));
             glg.spacing = new Vector2(myWidth * 0.1f / (cellsWidth+1), myHeight * 0.1f / (cellsHeight+1));
+
+            int tmpHeight = (int)(myHeight * 0.9f / cellsHeight);
+            int tmpWidth = (int)(myHeight * 0.9f / cellsHeight);
 
             foreach (GameObject me in innerElements)
             {
@@ -106,23 +114,36 @@ namespace GameUI
                 le.flexibleHeight = (int)(myHeight * 0.9f / cellsHeight);
                 le.flexibleWidth = (int)(myHeight * 0.9f / cellsWidth);
             }
+
+            for (int i = 0; i < cellsHeight; ++i)
+            {
+                for (int j = 0; j < cellsWidth; ++j)
+                {
+                    Vector2 anchorCenter = new Vector2(newCenterCoordinates.x - myWidth / 2 + glg.padding.left + j * (glg.spacing.x + tmpWidth) + tmpWidth / 2,
+                        newCenterCoordinates.y + myHeight / 2 - (glg.padding.top + i * (glg.spacing.y + tmpHeight) + tmpHeight / 2));
+
+                    ddElementsPositions.Add(anchorCenter);
+                }
+            }
+
+            ddElementsPositions.Add(new Vector2(0,0));
         }
 
         public override void SetAnotherDDElement(Sprite spr) // produced on gameObject initiation
         {
             if (cntr <= innerElements.Count)
             {
-                DragAndDropScript ddElement = Instantiate(microElementPrefab);
-                ddElement.transform.parent = innerElements[cntr].transform;
-                ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
-                //ddElement.transform.parent = myCanvas.transform;
-                //ddElement.transform.position = innerElements[cntr].transform.position;
-                ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                ddElement.GetComponent<RectTransform>().sizeDelta = innerElements[cntr].GetComponent<RectTransform>().sizeDelta;
-                ddElement.MyCanvas = myCanvas;
+                GameObject ddElement = Instantiate(microElementPrefab, myCanvas.transform, false) as GameObject;
 
-                ddElement.SetImage(spr, cntr, 2);
-                ddElements.Add(ddElement.gameObject);
+                ddElement.GetComponent<RectTransform>().anchoredPosition = ddElementsPositions[cntr];
+                ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+                ddElement.GetComponent<RectTransform>().sizeDelta = glg.cellSize;
+                ddElement.GetComponent<DragAndDropScript>().MyCanvas = myCanvas;
+
+                ddElement.GetComponent<DragAndDropScript>().SetImage(spr, cntr, 2);
+                ddElements[ddElements.Count - 1] = ddElement;
+                ddElements.Add(emptyStub);
 
                 cntr++;
             }
@@ -130,9 +151,10 @@ namespace GameUI
 
         public override bool PlusDDElement(GameObject go) // when DnD element is dropped
         {
-            if (ddElements.Count <= innerElements.Count)
+            if (ddElements.Count <= innerElements.Count+1)
             {
-                ddElements.Add(go);
+                ddElements[ddElements.Count - 1] = go;
+                ddElements.Add(emptyStub);
                 return true;
             }
             return false;
@@ -145,21 +167,19 @@ namespace GameUI
 
         public override void RearrangeDDelements() // when DnD element is dropped
         {
-            int cntrr = 0;
-
-            foreach (GameObject go in ddElements)
+            for (int i = 0; i < ddElements.Count; ++i)
             {
-                go.transform.parent = innerElements[cntrr].transform;
-                go.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
-                Debug.Log("go.name " + go.name + "  localCoords " + go.transform.localPosition);
-                //go.transform.parent = myCanvas.transform;
-                //go.transform.position = innerElements[cntrr].transform.position;
-                //go.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                go.GetComponent<DragAndDropScript>().myNumberInStorage = cntrr; // Don`t know if it will work
-                go.GetComponent<DragAndDropScript>().myOwnerCode = 2;
+                //Debug.Log("Parent name: " + ddElements[i].transform.parent.name);
+                ddElements[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(ddElementsPositions[i].x, ddElementsPositions[i].y);
+                //Debug.Log("Anchored position: " + ddElements[i].GetComponent<RectTransform>().anchoredPosition);
+                //ddElements[i].SetActive(false);
+                //ddElements[i].SetActive(true);
+                //ddElements[i].transform.localPosition = new Vector3(ddElementsPositions[i].x, ddElementsPositions[i].y, 0);
 
-                cntrr++;
+                ddElements[i].GetComponent<DragAndDropScript>().myNumberInStorage = i; // Don`t know if it will work
+                ddElements[i].GetComponent<DragAndDropScript>().myOwnerCode = 2;
             }
+
         }
     }
 }

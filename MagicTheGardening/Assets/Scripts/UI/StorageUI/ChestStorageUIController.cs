@@ -8,7 +8,8 @@ namespace GameUI
     public class ChestStorageUIController : AbstractStorageUIController
     {
 
-        public DragAndDropScript microElementPrefab;
+        //public DragAndDropScript microElementPrefab;
+        public GameObject microElementPrefab;
 
         int cellsWidth;
         int cellsHeight;
@@ -20,12 +21,15 @@ namespace GameUI
         float heightCoeff = 2.7f;
 
         RectTransform myRectTransform;
+        GridLayoutGroup glg;
         Canvas myCanvas;
 
         [SerializeField]
         List<GameObject> innerElements = new List<GameObject>();
 
+        [SerializeField]
         List<GameObject> ddElements = new List<GameObject>();
+        List<Vector2> ddElementsPositions = new List<Vector2>();
 
         // Use this for initialization
         void Start()
@@ -46,9 +50,11 @@ namespace GameUI
 
             myRectTransform = GetComponent<RectTransform>();
             myCanvas = FindObjectOfType<Canvas>();
+            glg = GetComponent<GridLayoutGroup>();
 
             cntr = 0;
-            
+            ddElementsPositions.Clear();
+
             //gameObject.transform.parent = myCanvas.transform;
         }
 
@@ -77,9 +83,7 @@ namespace GameUI
         public override void SetSelfScaling(Vector2 centerCoords)
         {
             Vector2 canvasScale = myCanvas.GetComponent<CanvasScaler>().referenceResolution;
-            //Debug.Log("canvasScale: " + canvasScale);
             Vector2 canvasSize = new Vector2(myCanvas.GetComponent<RectTransform>().rect.width, myCanvas.GetComponent<RectTransform>().rect.height);
-            //Debug.Log("canvasSize: " + canvasSize);
 
             Vector2 newCenterCoordinates = new Vector2((centerCoords.x - 0.5f) * canvasSize.x, (centerCoords.y - 0.5f) * canvasSize.y);
 
@@ -90,32 +94,37 @@ namespace GameUI
             float myWidth = (int)(deltaSizeCoeff * cellsWidth);
             float myHeight = (int)(deltaSizeCoeff * cellsHeight);
 
-            //myRectTransform.anchoredPosition = centerCoords;
-            //float myWidth = (int)myCanvas.GetComponent<RectTransform>().rect.width / widthCoeff;
-            //float myHeight = (int)myCanvas.GetComponent<RectTransform>().rect.height / heightCoeff;
             myRectTransform.sizeDelta = new Vector2(myWidth, myHeight);
 
-            GridLayoutGroup glg = GetComponent<GridLayoutGroup>();
             glg.cellSize = new Vector2(myWidth * 0.9f / cellsWidth, myHeight * 0.9f / cellsHeight);
             glg.padding.left = (int)(myWidth * 0.1f / (cellsWidth + 1));
             glg.padding.top = (int)(myHeight * 0.1f / (cellsHeight + 1));
             glg.spacing = new Vector2(myWidth * 0.1f / (cellsWidth + 1), myHeight * 0.1f / (cellsHeight + 1));
-            /*
-            glg.cellSize = new Vector2(myHeight * 0.978f / cellsWidth, myHeight * 0.978f / cellsHeight);
-            glg.padding.left = (int)(myHeight * 0.011f);
-            glg.padding.top = (int)(myHeight * 0.011f);
-            glg.spacing = new Vector2(0f, myHeight * 0.0015f);
-             * */
+
+            int tmpHeight = (int)(myHeight * 0.9f / cellsHeight);
+            int tmpWidth = (int)(myHeight * 0.9f / cellsHeight);
+
+            //Debug.Log("tmpWidth: " + tmpWidth.ToString() + "  tmpHeight: " + tmpHeight.ToString());
 
             foreach (GameObject me in innerElements)
             {
                 LayoutElement le = me.GetComponent<LayoutElement>();
                 le.flexibleHeight = (int)(myHeight * 0.9f / cellsHeight);
                 le.flexibleWidth = (int)(myHeight * 0.9f / cellsWidth);
-                /*
-                le.flexibleHeight = (int)(myHeight * 0.978f / cellsHeight);
-                le.flexibleWidth = (int)(myHeight * 0.978f / cellsWidth);
-                 * */
+            }
+
+            //Debug.Log("panelCenter: " + newCenterCoordinates);
+            //Debug.Log("panelSize: " + myRectTransform.sizeDelta);
+            for (int i = 0; i < cellsHeight; ++i)
+            {
+                for (int j = 0; j < cellsWidth; ++j)
+                {
+                    Vector2 anchorCenter = new Vector2(newCenterCoordinates.x - myWidth / 2 + glg.padding.left + j * (glg.spacing.x + tmpWidth) + tmpWidth/2,
+                        newCenterCoordinates.y + myHeight / 2 - (glg.padding.top + i * (glg.spacing.y + tmpHeight) + tmpHeight / 2));
+
+                    ddElementsPositions.Add(anchorCenter);
+                    //Debug.Log("anchorCenter: " + anchorCenter);
+                }
             }
         }
 
@@ -123,16 +132,16 @@ namespace GameUI
         {
             if (cntr <= innerElements.Count)
             {
-                DragAndDropScript ddElement = Instantiate(microElementPrefab);
-                ddElement.transform.parent = innerElements[cntr].transform;
-                ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
-                //ddElement.transform.parent = myCanvas.transform;
-                //ddElement.transform.position = innerElements[cntr].transform.position;
-                ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                ddElement.GetComponent<RectTransform>().sizeDelta = innerElements[cntr].GetComponent<RectTransform>().sizeDelta;
-                ddElement.MyCanvas = myCanvas;
+                //GameObject ddElement = Instantiate(microElementPrefab, innerElements[cntr].transform.position, innerElements[cntr].transform.rotation) as GameObject;
+                GameObject ddElement = Instantiate(microElementPrefab, myCanvas.transform, false) as GameObject;
 
-                ddElement.SetImage(spr, cntr, 1);
+                ddElement.GetComponent<RectTransform>().anchoredPosition = ddElementsPositions[cntr];
+                ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+                ddElement.GetComponent<RectTransform>().sizeDelta = glg.cellSize;
+                ddElement.GetComponent<DragAndDropScript>().MyCanvas = myCanvas;
+
+                ddElement.GetComponent<DragAndDropScript>().SetImage(spr, cntr, 1);
                 ddElements.Add(ddElement.gameObject);
 
                 cntr++;
@@ -160,9 +169,8 @@ namespace GameUI
 
             foreach (GameObject go in ddElements)
             {
-                go.transform.parent = innerElements[cntrr].transform;
-                go.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
-                //Debug.Log("go.name " + go.name + "  localCoords " + go.transform.localPosition);
+                go.GetComponent<RectTransform>().anchoredPosition = ddElementsPositions[cntrr];
+
                 go.GetComponent<DragAndDropScript>().myNumberInStorage = cntrr; // Don`t know if it will work
                 go.GetComponent<DragAndDropScript>().myOwnerCode = 1;
 

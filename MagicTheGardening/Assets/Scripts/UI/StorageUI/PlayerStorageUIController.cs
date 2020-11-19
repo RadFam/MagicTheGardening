@@ -56,9 +56,9 @@ namespace GameUI
             glg = GetComponent<GridLayoutGroup>();
             ddElementsPositions.Clear();
 
-            emptyStub.transform.SetParent(myCanvas.transform, false);
-            emptyStub.transform.localScale = new Vector3(0,0,0);
-            ddElements.Add(emptyStub);
+            //emptyStub.transform.SetParent(myCanvas.transform, false);
+            //emptyStub.transform.localScale = new Vector3(0,0,0);
+            //ddElements.Add(emptyStub);
             cntr = 0;
         }
 
@@ -113,6 +113,7 @@ namespace GameUI
                 LayoutElement le = me.GetComponent<LayoutElement>();
                 le.flexibleHeight = (int)(myHeight * 0.9f / cellsHeight);
                 le.flexibleWidth = (int)(myHeight * 0.9f / cellsWidth);
+                me.GetComponent<StorageSlotScript>().MyAccessory = 2;
             }
 
             for (int i = 0; i < cellsHeight; ++i)
@@ -129,21 +130,24 @@ namespace GameUI
             ddElementsPositions.Add(new Vector2(0,0));
         }
 
-        public override void SetAnotherDDElement(Sprite spr) // produced on gameObject initiation
+        public override void SetAnotherDDElement(Sprite spr, string prName, int prVol) // produced on gameObject initiation
         {
             if (cntr <= innerElements.Count)
             {
-                GameObject ddElement = Instantiate(microElementPrefab, myCanvas.transform, false) as GameObject;
+                //GameObject ddElement = Instantiate(microElementPrefab, myCanvas.transform, false) as GameObject;
+                GameObject ddElement = Instantiate(microElementPrefab, innerElements[cntr].transform, true) as GameObject;
 
-                ddElement.GetComponent<RectTransform>().anchoredPosition = ddElementsPositions[cntr];
+                //ddElement.GetComponent<RectTransform>().anchoredPosition = ddElementsPositions[cntr];
+                ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
                 ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
                 ddElement.GetComponent<RectTransform>().sizeDelta = glg.cellSize;
-                ddElement.GetComponent<DragAndDropScript>().MyCanvas = myCanvas;
+                //ddElement.GetComponent<DragAndDropScript>().MyCanvas = myCanvas;
 
-                ddElement.GetComponent<DragAndDropScript>().SetImage(spr, cntr, 2);
-                ddElements[ddElements.Count - 1] = ddElement;
-                ddElements.Add(emptyStub);
+                //ddElement.GetComponent<DragAndDropScript>().SetImage(spr, cntr, 2);
+                ddElement.GetComponent<DragScript>().SetImage(spr, prName, prVol, 2);
+                ddElements.Add(ddElement.gameObject);
+                //ddElements.Add(emptyStub);
 
                 cntr++;
             }

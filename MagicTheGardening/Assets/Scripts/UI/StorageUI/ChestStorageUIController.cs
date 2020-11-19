@@ -111,6 +111,7 @@ namespace GameUI
                 LayoutElement le = me.GetComponent<LayoutElement>();
                 le.flexibleHeight = (int)(myHeight * 0.9f / cellsHeight);
                 le.flexibleWidth = (int)(myHeight * 0.9f / cellsWidth);
+                me.GetComponent<StorageSlotScript>().MyAccessory = 1;
             }
 
             //Debug.Log("panelCenter: " + newCenterCoordinates);
@@ -128,20 +129,23 @@ namespace GameUI
             }
         }
 
-        public override void SetAnotherDDElement(Sprite spr)
+        public override void SetAnotherDDElement(Sprite spr, string prName, int prVol)
         {
             if (cntr <= innerElements.Count)
             {
                 //GameObject ddElement = Instantiate(microElementPrefab, innerElements[cntr].transform.position, innerElements[cntr].transform.rotation) as GameObject;
-                GameObject ddElement = Instantiate(microElementPrefab, myCanvas.transform, false) as GameObject;
+                //GameObject ddElement = Instantiate(microElementPrefab, myCanvas.transform, false) as GameObject;
+                GameObject ddElement = Instantiate(microElementPrefab, innerElements[cntr].transform, true) as GameObject;
 
-                ddElement.GetComponent<RectTransform>().anchoredPosition = ddElementsPositions[cntr];
+                //ddElement.GetComponent<RectTransform>().anchoredPosition = ddElementsPositions[cntr];
+                ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
                 ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
                 ddElement.GetComponent<RectTransform>().sizeDelta = glg.cellSize;
-                ddElement.GetComponent<DragAndDropScript>().MyCanvas = myCanvas;
+                //ddElement.GetComponent<DragAndDropScript>().MyCanvas = myCanvas;
 
-                ddElement.GetComponent<DragAndDropScript>().SetImage(spr, cntr, 1);
+                //ddElement.GetComponent<DragAndDropScript>().SetImage(spr, cntr, 1);
+                ddElement.GetComponent<DragScript>().SetImage(spr, prName, prVol, 1);
                 ddElements.Add(ddElement.gameObject);
 
                 cntr++;

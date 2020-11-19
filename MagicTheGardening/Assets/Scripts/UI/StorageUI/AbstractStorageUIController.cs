@@ -11,7 +11,7 @@ namespace GameUI
         {
 
         }
-        public virtual void SetAnotherDDElement(Sprite spr)
+        public virtual void SetAnotherDDElement(Sprite spr, string nm, int vol)
         {
 
         }

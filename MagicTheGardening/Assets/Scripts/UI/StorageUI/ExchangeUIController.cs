@@ -105,7 +105,7 @@ namespace GameUI
             //Debug.Log("SSc_subj count: " + tmp.ToString());
             for (int i = 0; i < tmp; ++i)
             {
-                playerPrefab.SetAnotherDDElement(SSc_subj.GetStorageProduct(i).productSprite);
+                playerPrefab.SetAnotherDDElement(SSc_subj.GetStorageProduct(i).productSprite, SSc_subj.GetStorageProduct(i).productName, SSc_subj.GetStorageProductVol(i));
             }
 
 
@@ -115,7 +115,7 @@ namespace GameUI
             tmp = SSc_obj.GetStorageLength();
             for (int i = 0; i < tmp; ++i)
             {
-                chestPrefab.SetAnotherDDElement(SSc_obj.GetStorageProduct(i).productSprite);
+                chestPrefab.SetAnotherDDElement(SSc_obj.GetStorageProduct(i).productSprite, SSc_obj.GetStorageProduct(i).productName, SSc_obj.GetStorageProductVol(i));
             }
 
             rectSubj = playerPrefab.gameObject;
@@ -124,7 +124,37 @@ namespace GameUI
 
         public void ShowPlayerSales()
         {
+        
+        }
 
+        public bool ExchangeStorages(string product, int fromSt, int toSt) // 1 - object menu, 2 - subject menu
+        {
+            bool res = false;
+
+            if (fromSt == 1 && toSt == 2)
+            {
+                int prNum = SSc_obj.HasProduct(product);
+                SSc_obj.RemoveProduct(product, prNum);
+                int prNumA = SSc_subj.HasProduct(product);
+                if (prNumA > 0)
+                {
+                    res = true;
+                }
+                SSc_subj.RemoveProduct(product, prNum);
+            }
+            if (fromSt == 2 && toSt == 1)
+            {
+                int prNum = SSc_subj.HasProduct(product);
+                SSc_subj.RemoveProduct(product, prNum);
+                int prNumA = SSc_obj.HasProduct(product);
+                if (prNumA > 0)
+                {
+                    res = true;
+                }
+                SSc_obj.RemoveProduct(product, prNum);
+            }
+
+            return res;
         }
 
         public void PutObjectIntoStash(int SObj, int dndStorageNum) // 1 - to subject menu, 2 - to object menu

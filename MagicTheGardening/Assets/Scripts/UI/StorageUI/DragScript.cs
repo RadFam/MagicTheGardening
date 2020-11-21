@@ -5,69 +5,72 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
 
-public class DragScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+namespace GameUI
 {
-    public static GameObject dragItem;
-
-    public int myNumberInStorage;
-    public string myProductName;
-    public int myProductVolume; // stay in rest for a while 
-    public int myOwnerCode; // 1 - object, 2 - subject
-
-    Vector3 initPosition;
-    Transform initParent;
-    RectTransform myRectangle;
-    public RectTransform MyRect
+    public class DragScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        get { return myRectangle; }
-        set { myRectangle = value; }
-    }
-    void Awake()
-    {
-        myRectangle = gameObject.GetComponent<RectTransform>();
-    }
-    public void SetImage(Sprite img, string prName, int prVol, int storageOwn)
-    {
-        Image spr = GetComponent<Image>();
-        spr.sprite = img;
-        myProductName = prName;
-        myProductVolume = prVol;
-        myOwnerCode = storageOwn;
-    }
+        public static GameObject dragItem;
 
-    public void ResetImage()
-    {
-        Image spr = GetComponent<Image>();
-        spr.sprite = null;
-    }
+        public int myNumberInStorage;
+        public string myProductName;
+        public int myProductVolume; // stay in rest for a while 
+        public int myOwnerCode; // 1 - object, 2 - subject
 
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        dragItem = gameObject;
-        initPosition = gameObject.transform.position;
-        initParent = gameObject.transform.parent;
-
-        gameObject.transform.SetParent(transform.root);  
-        gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
-
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        gameObject.transform.position = Input.mousePosition;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        dragItem = null;
-
-        if (gameObject.transform.parent == initParent || gameObject.transform.parent == gameObject.transform.root)
+        Vector3 initPosition;
+        Transform initParent;
+        RectTransform myRectangle;
+        public RectTransform MyRect
         {
-            gameObject.transform.position = initPosition;
-            gameObject.transform.SetParent(initParent);
+            get { return myRectangle; }
+            set { myRectangle = value; }
+        }
+        void Awake()
+        {
+            myRectangle = gameObject.GetComponent<RectTransform>();
+        }
+        public void SetImage(Sprite img, string prName, int prVol, int storageOwn)
+        {
+            Image spr = GetComponent<Image>();
+            spr.sprite = img;
+            myProductName = prName;
+            myProductVolume = prVol;
+            myOwnerCode = storageOwn;
         }
 
-        gameObject.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        public void ResetImage()
+        {
+            Image spr = GetComponent<Image>();
+            spr.sprite = null;
+        }
+
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            dragItem = gameObject;
+            initPosition = gameObject.transform.position;
+            initParent = gameObject.transform.parent;
+
+            gameObject.transform.SetParent(transform.root);
+            gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            gameObject.transform.position = Input.mousePosition;
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            dragItem = null;
+
+            if (gameObject.transform.parent == initParent || gameObject.transform.parent == gameObject.transform.root)
+            {
+                gameObject.transform.position = initPosition;
+                gameObject.transform.SetParent(initParent);
+            }
+
+            gameObject.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        }
     }
 }

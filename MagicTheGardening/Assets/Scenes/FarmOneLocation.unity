@@ -1845,6 +1845,8 @@ MonoBehaviour:
   myStorage:
   - product: {fileID: 11400000, guid: a85a9f27a15ea00409176f6b0fa23a11, type: 2}
     count: 3
+  - product: {fileID: 11400000, guid: 1b6323659fb31e940b523addc1487046, type: 2}
+    count: 4
 --- !u!195 &716169558
 NavMeshAgent:
   m_ObjectHideFlags: 0

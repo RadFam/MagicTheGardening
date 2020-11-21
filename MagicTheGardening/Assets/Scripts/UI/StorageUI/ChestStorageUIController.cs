@@ -133,52 +133,16 @@ namespace GameUI
         {
             if (cntr <= innerElements.Count)
             {
-                //GameObject ddElement = Instantiate(microElementPrefab, innerElements[cntr].transform.position, innerElements[cntr].transform.rotation) as GameObject;
-                //GameObject ddElement = Instantiate(microElementPrefab, myCanvas.transform, false) as GameObject;
                 GameObject ddElement = Instantiate(microElementPrefab, innerElements[cntr].transform, true) as GameObject;
-
-                //ddElement.GetComponent<RectTransform>().anchoredPosition = ddElementsPositions[cntr];
+                
                 ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
                 ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
                 ddElement.GetComponent<RectTransform>().sizeDelta = glg.cellSize;
-                //ddElement.GetComponent<DragAndDropScript>().MyCanvas = myCanvas;
-
-                //ddElement.GetComponent<DragAndDropScript>().SetImage(spr, cntr, 1);
                 ddElement.GetComponent<DragScript>().SetImage(spr, prName, prVol, 1);
                 ddElements.Add(ddElement.gameObject);
 
                 cntr++;
-            }
-        }
-
-        public override bool PlusDDElement(GameObject go) // when DnD element is dropped
-        {
-            if (ddElements.Count <= innerElements.Count)
-            {
-                ddElements.Add(go);
-                return true;
-            }
-            return false;
-        }
-
-        public override void MinusDDElement(int elNum) // when DnD element is dropped
-        {
-            ddElements.RemoveAt(elNum);
-        }
-
-        public override void RearrangeDDelements() // when DnD element is dropped
-        {
-            int cntrr = 0;
-
-            foreach (GameObject go in ddElements)
-            {
-                go.GetComponent<RectTransform>().anchoredPosition = ddElementsPositions[cntrr];
-
-                go.GetComponent<DragAndDropScript>().myNumberInStorage = cntrr; // Don`t know if it will work
-                go.GetComponent<DragAndDropScript>().myOwnerCode = 1;
-
-                cntrr++;
             }
         }
     }

@@ -15,17 +15,5 @@ namespace GameUI
         {
 
         }
-        public virtual bool PlusDDElement(GameObject go)
-        {
-            return true;
-        }
-        public virtual void MinusDDElement(int elNum)
-        {
-
-        }
-        public virtual void RearrangeDDelements()
-        {
-
-        }
     }
 }

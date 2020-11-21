@@ -134,56 +134,17 @@ namespace GameUI
         {
             if (cntr <= innerElements.Count)
             {
-                //GameObject ddElement = Instantiate(microElementPrefab, myCanvas.transform, false) as GameObject;
                 GameObject ddElement = Instantiate(microElementPrefab, innerElements[cntr].transform, true) as GameObject;
-
-                //ddElement.GetComponent<RectTransform>().anchoredPosition = ddElementsPositions[cntr];
+                
                 ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
                 ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
                 ddElement.GetComponent<RectTransform>().sizeDelta = glg.cellSize;
-                //ddElement.GetComponent<DragAndDropScript>().MyCanvas = myCanvas;
-
-                //ddElement.GetComponent<DragAndDropScript>().SetImage(spr, cntr, 2);
                 ddElement.GetComponent<DragScript>().SetImage(spr, prName, prVol, 2);
                 ddElements.Add(ddElement.gameObject);
-                //ddElements.Add(emptyStub);
 
                 cntr++;
             }
-        }
-
-        public override bool PlusDDElement(GameObject go) // when DnD element is dropped
-        {
-            if (ddElements.Count <= innerElements.Count+1)
-            {
-                ddElements[ddElements.Count - 1] = go;
-                ddElements.Add(emptyStub);
-                return true;
-            }
-            return false;
-        }
-
-        public override void MinusDDElement(int elNum) // when DnD element is dropped
-        {
-            ddElements.RemoveAt(elNum);
-        }
-
-        public override void RearrangeDDelements() // when DnD element is dropped
-        {
-            for (int i = 0; i < ddElements.Count; ++i)
-            {
-                //Debug.Log("Parent name: " + ddElements[i].transform.parent.name);
-                ddElements[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(ddElementsPositions[i].x, ddElementsPositions[i].y);
-                //Debug.Log("Anchored position: " + ddElements[i].GetComponent<RectTransform>().anchoredPosition);
-                //ddElements[i].SetActive(false);
-                //ddElements[i].SetActive(true);
-                //ddElements[i].transform.localPosition = new Vector3(ddElementsPositions[i].x, ddElementsPositions[i].y, 0);
-
-                ddElements[i].GetComponent<DragAndDropScript>().myNumberInStorage = i; // Don`t know if it will work
-                ddElements[i].GetComponent<DragAndDropScript>().myOwnerCode = 2;
-            }
-
         }
     }
 }

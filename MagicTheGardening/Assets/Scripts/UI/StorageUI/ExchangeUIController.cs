@@ -64,13 +64,11 @@ namespace GameUI
             objPrefab = chestPrefab;
             subjPrefab = playerPrefab;
 
-            //Debug.Log("Camera: " + cam + "  Object: " + SSc_obj + "  Subject: " + SSc_subj);
-
             // Instantiate storage panels by the placement of objects
             Vector3 obj_pos = cam.WorldToScreenPoint(SSc_obj.gameObject.transform.position);
             Vector3 subj_pos = cam.WorldToScreenPoint(SSc_subj.gameObject.transform.position);
 
-            //Debug.Log("obj_pos: " + obj_pos + "   subj_pos: " + subj_pos);
+            Debug.Log("obj_pos: " + obj_pos + "   subj_pos: " + subj_pos);
 
             Vector2 deltaObj = new Vector2(0.0f, 0.0f);
             Vector2 deltaSubj = new Vector2(0.0f, 0.0f);
@@ -83,7 +81,7 @@ namespace GameUI
             else if (obj_pos.x > subj_pos.x && obj_pos.y >= subj_pos.y)
             {
                 deltaObj = new Vector2(0.8f, 0.2f);
-                deltaSubj = new Vector2(0.3f, 0.8f);
+                deltaSubj = new Vector2(0.3f, 0.8f); // (!!!!)
             }
             else if (obj_pos.x <= subj_pos.x && obj_pos.y < subj_pos.y)
             {
@@ -95,14 +93,12 @@ namespace GameUI
                 deltaObj = new Vector2(0.8f, 0.8f);
                 deltaSubj = new Vector2(0.3f, 0.2f);
             }
-
-            //Debug.Log("deltaObj: " + deltaObj + "   deltaSubj: " + deltaSubj);
-
+            
             playerPrefab.gameObject.SetActive(true);
             playerPrefab.SetSelfScaling(deltaSubj);
 
             int tmp = SSc_subj.GetStorageLength();
-            //Debug.Log("SSc_subj count: " + tmp.ToString());
+            
             for (int i = 0; i < tmp; ++i)
             {
                 playerPrefab.SetAnotherDDElement(SSc_subj.GetStorageProduct(i).productSprite, SSc_subj.GetStorageProduct(i).productName, SSc_subj.GetStorageProductVol(i));
@@ -140,7 +136,7 @@ namespace GameUI
                 {
                     res = true;
                 }
-                SSc_subj.RemoveProduct(product, prNum);
+                SSc_subj.AddProduct(product, prNum);
             }
             if (fromSt == 2 && toSt == 1)
             {
@@ -151,34 +147,10 @@ namespace GameUI
                 {
                     res = true;
                 }
-                SSc_obj.RemoveProduct(product, prNum);
+                SSc_obj.AddProduct(product, prNum);
             }
 
             return res;
-        }
-
-        public void PutObjectIntoStash(int SObj, int dndStorageNum) // 1 - to subject menu, 2 - to object menu
-        {
-            // Here we suppose, that we put object from from one stash to another
-            if (SObj == 1)
-            {
-                // Get item from object storage and put it into subject storage
-                string prName = SSc_obj.GetStorageProduct(dndStorageNum).productName;
-                int prNum = SSc_obj.GetStorageProductVol(dndStorageNum);
-                SSc_obj.RemoveProduct(prName, prNum);
-                SSc_subj.AddProduct(prName, prNum);
-            }
-            else
-            {
-                // Get item from subject storage and put it into object storage
-                string prName = SSc_subj.GetStorageProduct(dndStorageNum).productName;
-                int prNum = SSc_subj.GetStorageProductVol(dndStorageNum);
-                SSc_subj.RemoveProduct(prName, prNum);
-                SSc_obj.AddProduct(prName, prNum);
-            }
-            
-            subjPrefab.RearrangeDDelements();
-            objPrefab.RearrangeDDelements();
         }
     }
 }

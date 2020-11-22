@@ -14,6 +14,7 @@ namespace GameUI
 
         public PlayerStorageUIController playerPrefab;
         public ChestStorageUIController chestPrefab;
+        public BoilerStorageUIController boilerPrefab;
         public SalesmanStorageUIController salesPrefab;
         public GameObject exchangePrefab;
 
@@ -25,20 +26,6 @@ namespace GameUI
         StorageScript SSc_obj;
         StorageScript SSc_subj;
 
-        GameObject rectObj;
-        GameObject rectSubj;
-
-        public GameObject RectObj
-        {
-            get { return rectObj; }
-            set { rectObj = value; }
-        }
-        public GameObject RectSubj
-        {
-            get { return rectSubj; }
-            set { rectSubj = value; }
-        }
-
         // Use this for initialization
         void Start()
         {
@@ -49,12 +36,13 @@ namespace GameUI
         {
             playerPrefab.gameObject.SetActive(false);
             chestPrefab.gameObject.SetActive(false);
+            boilerPrefab.gameObject.SetActive(false);
             //salesPrefab.gameObject.SetActive(false);
 
             exchangePrefab.gameObject.SetActive(false);
         }
 
-        public void ShowPlayerChest(ref StorageScript ssc_1, ref StorageScript ssc_2) // player is the Subject(!)
+        public void ShowPlayerChest(ref StorageScript ssc_1, ref StorageScript ssc_2, StorageTypes stType) // player is the Subject(!)
         {
             exchangePrefab.gameObject.SetActive(true);
 
@@ -68,30 +56,30 @@ namespace GameUI
             Vector3 obj_pos = cam.WorldToScreenPoint(SSc_obj.gameObject.transform.position);
             Vector3 subj_pos = cam.WorldToScreenPoint(SSc_subj.gameObject.transform.position);
 
-            Debug.Log("obj_pos: " + obj_pos + "   subj_pos: " + subj_pos);
+            //Debug.Log("obj_pos: " + obj_pos + "   subj_pos: " + subj_pos);
 
             Vector2 deltaObj = new Vector2(0.0f, 0.0f);
             Vector2 deltaSubj = new Vector2(0.0f, 0.0f);
 
             if (obj_pos.x <= subj_pos.x && obj_pos.y >= subj_pos.y)
             {
-                deltaObj = new Vector2(0.2f, 0.2f);
-                deltaSubj = new Vector2(0.7f, 0.8f);
-            }
-            else if (obj_pos.x > subj_pos.x && obj_pos.y >= subj_pos.y)
-            {
-                deltaObj = new Vector2(0.8f, 0.2f);
-                deltaSubj = new Vector2(0.3f, 0.8f); // (!!!!)
-            }
-            else if (obj_pos.x <= subj_pos.x && obj_pos.y < subj_pos.y)
-            {
                 deltaObj = new Vector2(0.2f, 0.8f);
                 deltaSubj = new Vector2(0.7f, 0.2f);
             }
-            else if (obj_pos.x > subj_pos.x && obj_pos.y < subj_pos.y)
+            else if (obj_pos.x > subj_pos.x && obj_pos.y >= subj_pos.y)
             {
                 deltaObj = new Vector2(0.8f, 0.8f);
-                deltaSubj = new Vector2(0.3f, 0.2f);
+                deltaSubj = new Vector2(0.3f, 0.2f); // (!!!!)
+            }
+            else if (obj_pos.x <= subj_pos.x && obj_pos.y < subj_pos.y)
+            {
+                deltaObj = new Vector2(0.2f, 0.2f);
+                deltaSubj = new Vector2(0.7f, 0.8f);
+            }
+            else if (obj_pos.x > subj_pos.x && obj_pos.y < subj_pos.y)
+            {
+                deltaObj = new Vector2(0.8f, 0.2f);
+                deltaSubj = new Vector2(0.3f, 0.8f);
             }
             
             playerPrefab.gameObject.SetActive(true);
@@ -104,18 +92,30 @@ namespace GameUI
                 playerPrefab.SetAnotherDDElement(SSc_subj.GetStorageProduct(i).productSprite, SSc_subj.GetStorageProduct(i).productName, SSc_subj.GetStorageProductVol(i));
             }
 
-
-            chestPrefab.gameObject.SetActive(true);
-            chestPrefab.SetSelfScaling(deltaObj);
-
-            tmp = SSc_obj.GetStorageLength();
-            for (int i = 0; i < tmp; ++i)
+            if (stType == StorageTypes.Chest)
             {
-                chestPrefab.SetAnotherDDElement(SSc_obj.GetStorageProduct(i).productSprite, SSc_obj.GetStorageProduct(i).productName, SSc_obj.GetStorageProductVol(i));
+                chestPrefab.gameObject.SetActive(true);
+                chestPrefab.SetSelfScaling(deltaObj);
+
+                tmp = SSc_obj.GetStorageLength();
+                for (int i = 0; i < tmp; ++i)
+                {
+                    chestPrefab.SetAnotherDDElement(SSc_obj.GetStorageProduct(i).productSprite, SSc_obj.GetStorageProduct(i).productName, SSc_obj.GetStorageProductVol(i));
+                }
             }
 
-            rectSubj = playerPrefab.gameObject;
-            rectObj = chestPrefab.gameObject;
+            if (stType == StorageTypes.Boiler)
+            {
+                boilerPrefab.gameObject.SetActive(true);
+                boilerPrefab.SetSelfScaling(deltaObj);
+
+                tmp = SSc_obj.GetStorageLength();
+                for (int i = 0; i < tmp; ++i)
+                {
+                    boilerPrefab.SetAnotherDDElement(SSc_obj.GetStorageProduct(i).productSprite, SSc_obj.GetStorageProduct(i).productName, SSc_obj.GetStorageProductVol(i));
+                }
+            }
+            
         }
 
         public void ShowPlayerSales()

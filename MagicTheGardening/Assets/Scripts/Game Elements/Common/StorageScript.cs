@@ -6,7 +6,7 @@ using GameControllers;
 
 namespace GameElement
 {
-    public class StorageScript : MonoBehaviour
+    public class StorageScript : MonoBehaviour, ISaveable
     {
         [System.Serializable]
         public struct myProductStorage
@@ -223,6 +223,41 @@ namespace GameElement
             myStorage.Clear();
             myMoneyStorage = 0;
             handProduct = null;
+        }
+
+        // Define this functions for saving
+        public object CaptureObject()
+        {
+            // Put back in hand what we have
+            // before saving we must have "Clear Hands"
+            FromHandToStorage();
+
+            Dictionary<string, int> myActualStorage = new Dictionary<string, int>();
+            myActualStorage.Add("Money", myMoneyStorage);
+            for (int i = 0; i < myStorage.Count; ++i)
+            {
+                myActualStorage.Add(myStorage[i].product.productName, myStorage[i].count);
+            }
+            
+            //.........
+            return myActualStorage;
+        }
+
+        public void RestoreObject(object obj)
+        {
+            myStorage.Clear();
+            Dictionary<string, int> myActualStorage = obj as Dictionary<string, int>;
+
+            myMoneyStorage = myActualStorage["Money"];
+            foreach (KeyValuePair<string, int> keyValue in myActualStorage)
+            {
+                if (keyValue.Key != "Money")
+                {
+                    AddProduct(keyValue.Key, keyValue.Value);
+                }
+            }
+
+            return;
         }
     }
 }

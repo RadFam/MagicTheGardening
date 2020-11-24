@@ -27,18 +27,18 @@ namespace GameElement
         int unwateredMax = 3; // Maybe this parameter is worth to introduce into plant characteristics (!)
         int unwateredDays = 0;
 
-        bool isPloweed;
-        bool isWatered;
-        bool isPlanted;
-        bool isFertilized;
-        bool isImproved_1;
-        bool isImproved_2;
+        bool isPloweed; // To ISaveable
+        bool isWatered; // To ISaveable
+        bool isPlanted; // To ISaveable
+        bool isFertilized; // To ISaveable
+        bool isImproved_1; // To ISaveable
+        bool isImproved_2; // To ISaveable
 
-        int[] plowedChar = { 0, 0, 0 }; // 0 - curr vol, 1 - decrease speed, 2 - max value;
-        int[] wateredChar = { 0, 0, 0 };
-        int[] fertilizedChar = { 0, 0, 0 };
-        int[] improvedOneChar = { 0, 0, 0 };
-        int[] improvedTwoChar = { 0, 0, 0 };
+        int[] plowedChar = { 0, 0, 0 }; // 0 - curr vol, 1 - decrease speed, 2 - max value;  // To ISaveable
+        int[] wateredChar = { 0, 0, 0 };  // To ISaveable
+        int[] fertilizedChar = { 0, 0, 0 };  // To ISaveable
+        int[] improvedOneChar = { 0, 0, 0 };  // To ISaveable
+        int[] improvedTwoChar = { 0, 0, 0 };  // To ISaveable
 
         // Start is called before the first frame update
         void Start()

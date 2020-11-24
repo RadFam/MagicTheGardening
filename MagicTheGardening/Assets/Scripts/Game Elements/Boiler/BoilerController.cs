@@ -141,13 +141,68 @@ namespace GameElement
         // Define functions later
         public object CaptureObject()
         {
+            /*
+                isBoiling = false;
+                daysOfBoiling = 0;
+                daysOfCurrentCook = 0;
+                cookingProduct = null;
+                cookingProductsVal = 0;
+             */
+
+            Dictionary<string, int> myActualBoilerContent = new Dictionary<string, int>();
+            if (isBoiling)
+            {
+                myActualBoilerContent.Add("isBoiling", 1);
+                myActualBoilerContent.Add("daysOfBoiling", daysOfBoiling);
+                myActualBoilerContent.Add("daysOfCurrentCook", daysOfCurrentCook);
+                myActualBoilerContent.Add(cookingProduct.productName, cookingProductsVal);
+            }
+            else
+            {
+                myActualBoilerContent.Add("isBoiling", 0);
+            }
+            
             //.........
-            return null;
+            return myActualBoilerContent;
         }
 
         public void RestoreObject(object obj)
         {
-            //.........
+            Dictionary<string, int> myActualBoilerContent = obj as Dictionary<string, int>;
+            if (myActualBoilerContent["isBoiling"] == 0)
+            {
+                isBoiling = false;
+                daysOfBoiling = 0;
+                daysOfCurrentCook = 0;
+                cookingProduct = null;
+                cookingProductsVal = 0;
+            }
+            if (myActualBoilerContent["isBoiling"] == 1)
+            {
+                isBoiling = true;
+                daysOfBoiling = myActualBoilerContent["daysOfBoiling"];
+                daysOfCurrentCook = myActualBoilerContent["daysOfCurrentCook"];
+                
+                foreach (KeyValuePair<string, int> keyValue in myActualBoilerContent)
+                {
+                    if (keyValue.Key != "daysOfBoiling" && keyValue.Key != "daysOfCurrentCook" && keyValue.Key != "isBoiling")
+                    {
+                        cookingProductsVal = keyValue.Value;
+                        Product_FullSatchel pFS = GlobalGameData.instance.allExistableProducts;
+                        foreach (ProductCommon PC in pFS.GetAllProducts)
+                        {
+                            if (PC.productName == keyValue.Key)
+                            {
+                                cookingProduct = PC;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+
+            }
+
             return;
         }
     }

@@ -40,6 +40,11 @@ namespace GameElement
         int[] improvedOneChar = { 0, 0, 0 };  // To ISaveable
         int[] improvedTwoChar = { 0, 0, 0 };  // To ISaveable
 
+        string soPlantName;
+        string soFertilizerName;
+        string soImproverOneName;
+        string soImproverTwoName;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -69,6 +74,11 @@ namespace GameElement
             isImproved_1 = false;
             isImproved_2 = false;
             isPlanted = false;
+
+            soPlantName = "";
+            soFertilizerName = "";
+            soImproverOneName = "";
+            soImproverTwoName = "";
         }
 
         public void TimeFlowReact()
@@ -136,6 +146,7 @@ namespace GameElement
 
             // And delete the plant(!!!)
             // DeletePlant();
+            DeplantGround();
         }
 
         void DewaterizeGround()
@@ -155,6 +166,7 @@ namespace GameElement
                 groundObject.GetComponent<Renderer>().material = groundGraphics.clearGroundMat[groundType];
             }
             // DeletePlant();
+            DeplantGround();
         }
 
         void DefertilizeGround()
@@ -170,6 +182,8 @@ namespace GameElement
 
             Destroy(fertilizerObject.GetComponent<MeshFilter>()); // Delete mesh of fertilizer
             Destroy(fertilizerObject.GetComponent<MeshRenderer>()); // Delete material of fertilizer
+
+            soFertilizerName = "";
         }
 
         void DeimproveOneGround()
@@ -182,6 +196,8 @@ namespace GameElement
 
             groundImproves[1].DeactivateImprovement();
             groundImproves.Remove(1);
+
+            soImproverOneName = "";
         }
 
         void DeimproveTwoGround()
@@ -194,6 +210,8 @@ namespace GameElement
 
             groundImproves[2].DeactivateImprovement();
             groundImproves.Remove(2);
+
+            soImproverTwoName = "";
         }
 
         // Remove Plant from ground
@@ -217,6 +235,8 @@ namespace GameElement
             }
 
             Destroy(plantObject.transform.GetChild(0).gameObject);
+
+            soPlantName = "";
         }
 
         public void TakePlantGround(ref StorageScript SSc)
@@ -336,6 +356,8 @@ namespace GameElement
 
                     groundImproves.Add(1, bI);
                     return true;
+
+                    soImproverOneName = bI.improveSC.soLoadName;
                 }
 
                 if (improvedTwoChar[0] == 0)
@@ -346,6 +368,7 @@ namespace GameElement
                     improvedTwoChar[2] = maxVal;
 
                     groundImproves.Add(2, bI);
+                    soImproverTwoName = bI.improveSC.soLoadName;
                     return true;
                 }
 
@@ -373,6 +396,7 @@ namespace GameElement
                 MeshRenderer mr = fertilizerObject.AddComponent<MeshRenderer>();
                 mr.material = sf.GetMaterial();
 
+                soFertilizerName = bI.improveSC.soLoadName;
                 return true;
             }
             return false;
@@ -402,6 +426,8 @@ namespace GameElement
                 {
                     groundImproves[2].ActivateImprovement();
                 }
+
+                soPlantName = pgc.soLoadName;
             }
 
             return false;
@@ -416,7 +442,27 @@ namespace GameElement
         // Define functions later
         public object CaptureObject()
         {
-            //.........
+            //Start making great saving file
+            Dictionary<string, object> myActualBoilerContent = new Dictionary<string, object>();
+
+            myActualBoilerContent.Add("isPloweed", (object)isPloweed);
+            myActualBoilerContent.Add("isWatered", (object)isWatered);
+            myActualBoilerContent.Add("isPlanted", (object)isPlanted);
+            myActualBoilerContent.Add("isFertilized", (object)isFertilized);
+            myActualBoilerContent.Add("isImproved_1", (object)isImproved_1);
+            myActualBoilerContent.Add("isImproved_2", (object)isImproved_2);
+
+            myActualBoilerContent.Add("plowedChar", (object)plowedChar);
+            myActualBoilerContent.Add("wateredChar", (object)wateredChar);
+            myActualBoilerContent.Add("fertilizedChar", (object)fertilizedChar);
+            myActualBoilerContent.Add("improvedOneChar", (object)improvedOneChar);
+            myActualBoilerContent.Add("improvedTwoChar", (object)improvedTwoChar);
+
+            myActualBoilerContent.Add("soPlantName", (object)soPlantName);
+            myActualBoilerContent.Add("soFertilizerName", (object)soFertilizerName);
+            myActualBoilerContent.Add("soImproverOneName", (object)soImproverOneName);
+            myActualBoilerContent.Add("soImproverTwoName", (object)soImproverTwoName);
+
             return null;
         }
 

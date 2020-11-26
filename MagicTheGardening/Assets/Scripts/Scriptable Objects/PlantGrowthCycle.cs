@@ -7,6 +7,7 @@ public class PlantGrowthCycle : ScriptableObject
 {
     public int growthStages;
     public string plantName;
+    public string soLoadName;
 
     public List<Mesh> plantView = new List<Mesh>();
     public List<Material> plantTex = new List<Material>();

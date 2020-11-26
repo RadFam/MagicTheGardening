@@ -6,7 +6,7 @@ namespace Improvements
 {
     public abstract class ScriptableImprovement : ScriptableObject
     {
-
+        public string soLoadName;
         public List<int> maxDuration;
         public List<int> speedWastage;
 

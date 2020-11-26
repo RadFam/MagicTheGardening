@@ -111,7 +111,7 @@ namespace GameElement
                 DefineGrownProducts();
             }
 
-            if (growthTimer > daysCounter) // растение "перезрело"
+            if (growthTimer > daysCounter) // растение "перезрело" (!!!!) НЕ РЕАЛИЗОВАНО (!!!!!)
             {
                 // Need to send appropriate message to parenting ground
                 // ....................................................
@@ -198,6 +198,20 @@ namespace GameElement
             }
 
             canTakeProds = true;
+        }
+
+        public object GetDataToSave()
+        {
+            object data = null;
+
+            object[] allData = { groundType, growthTimer, canTakeProds, currentStage };
+
+            return data;
+        }
+
+        public void SetDataToLoad(object data)
+        {
+
         }
     }
 }

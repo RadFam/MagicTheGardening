@@ -204,14 +204,38 @@ namespace GameElement
         {
             object data = null;
 
-            object[] allData = { groundType, growthTimer, canTakeProds, currentStage };
+            object[] allData = { groundType, growthTimer, canTakeProds, currentStage, plantGrowthData.soLoadName };
+            data = (object)allData;
 
             return data;
         }
 
         public void SetDataToLoad(object data)
         {
+            object[] repackData = data as object[];
 
+            groundType = (int)repackData[0];
+            growthTimer = (int)repackData[1];
+            canTakeProds = (bool)repackData[2];
+            currentStage = (int)repackData[3];
+            string plantData = "ScriptableObjects/" + (string)repackData[4];
+
+            // Load scriptable object of plantGrowthData
+            plantGrowthData = Resources.Load<PlantGrowthCycle>(plantData);
+            plantStages = plantGrowthData.growthStages;
+
+            meshFilter = gameObject.AddComponent<MeshFilter>();
+            meshFilter.sharedMesh = plantGrowthData.plantView[currentStage];
+            meshRendered = gameObject.AddComponent<MeshRenderer>();
+            meshRendered.material = plantGrowthData.plantTex[currentStage];
+
+            productsThatGrow.Clear();
+            for (int i = 0; i < plantGrowthData.productsCanGrow.Count; ++i)
+            {
+                productsThatGrow.Add(0);
+            }
+
+            SetPlantGrowthSpeeds();
         }
     }
 }

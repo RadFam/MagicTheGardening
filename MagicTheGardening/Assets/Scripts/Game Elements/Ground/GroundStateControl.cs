@@ -458,17 +458,40 @@ namespace GameElement
             myActualBoilerContent.Add("improvedOneChar", (object)improvedOneChar);
             myActualBoilerContent.Add("improvedTwoChar", (object)improvedTwoChar);
 
-            myActualBoilerContent.Add("soPlantName", (object)soPlantName);
+            //myActualBoilerContent.Add("soPlantName", (object)soPlantName);
+            if (plantObject.transform.GetChild(0).gameObject == null)
+            {
+                myActualBoilerContent.Add("soPlantName", (object)null);
+            }
+            else
+            {
+                myActualBoilerContent.Add("soPlantName", plantObject.transform.GetChild(0).gameObject.GetComponent<PlantController>().GetDataToSave());
+            }
             myActualBoilerContent.Add("soFertilizerName", (object)soFertilizerName);
             myActualBoilerContent.Add("soImproverOneName", (object)soImproverOneName);
             myActualBoilerContent.Add("soImproverTwoName", (object)soImproverTwoName);
 
-            return null;
+            return myActualBoilerContent;
         }
 
         public void RestoreObject(object obj)
         {
             //.........
+            Dictionary<string, object> loadedData = obj as Dictionary<string, object>;
+
+            isPloweed = (bool)loadedData["isPloweed"];
+            isWatered = (bool)loadedData["isWatered"];
+            isPlanted = (bool)loadedData["isPlanted"];
+            isFertilized = (bool)loadedData["isFertilized"];
+            isImproved_1 = (bool)loadedData["isImproved_1"];
+            isImproved_2 = (bool)loadedData["isImproved_2"];
+
+            plowedChar = loadedData["plowedChar"] as int[];
+            wateredChar = loadedData["wateredChar"] as int[];
+            fertilizedChar = loadedData["fertilizedChar"] as int[];
+            improvedOneChar = loadedData["improvedOneChar"] as int[];
+            improvedTwoChar = loadedData["improvedTwoChar"] as int[];
+
             return;
         }
     }

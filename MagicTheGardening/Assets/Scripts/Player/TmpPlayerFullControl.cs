@@ -77,5 +77,15 @@ namespace PlayerController
             dayCnt++;
             Debug.Log("NEW DAY COMES: " + dayCnt.ToString());
         }
+
+        public void SaveAllData()
+        {
+            Debug.Log("DATA WAS SAVED");
+        }
+
+        public void LoadAllData()
+        {
+            Debug.Log("DATA WAS LOADED");
+        }
     }
 }

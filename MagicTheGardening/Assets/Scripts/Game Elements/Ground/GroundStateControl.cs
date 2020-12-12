@@ -355,9 +355,8 @@ namespace GameElement
                     improvedOneChar[2] = maxVal;
 
                     groundImproves.Add(1, bI);
-                    return true;
-
                     soImproverOneName = bI.improveSC.soLoadName;
+                    return true;   
                 }
 
                 if (improvedTwoChar[0] == 0)
@@ -491,6 +490,69 @@ namespace GameElement
             fertilizedChar = loadedData["fertilizedChar"] as int[];
             improvedOneChar = loadedData["improvedOneChar"] as int[];
             improvedTwoChar = loadedData["improvedTwoChar"] as int[];
+
+            soFertilizerName = (string)loadedData["soFertilizerName"];
+            soImproverOneName = (string)loadedData["soImproverOneName"];
+            soImproverTwoName = (string)loadedData["soImproverTwoName"];
+
+            groundImproves[0] = null;
+            groundImproves[1] = null;
+            groundFertilizer = null;
+
+            if (soFertilizerName != "")
+            {
+                // load Fertilizer
+                soFertilizerName = "ScriptableObjects/" + soFertilizerName;
+
+                ScriptableImprovement si = Resources.Load<ScriptableImprovement>(soFertilizerName);
+                BaseImprovement bi = si.InitializeImprovement(gameObject);
+                groundFertilizer = bi;
+                bi.ApplyImprovemenetEffect();
+
+                SpeedFertilizer sf = bi as SpeedFertilizer;
+
+                MeshFilter mf = fertilizerObject.AddComponent<MeshFilter>();
+                mf.sharedMesh = sf.GetMesh();
+                MeshRenderer mr = fertilizerObject.AddComponent<MeshRenderer>();
+                mr.material = sf.GetMaterial();
+
+                soFertilizerName = (string)loadedData["soFertilizerName"];
+            }
+
+            if (soImproverOneName != "")
+            {
+                // load Improvement Two
+                soImproverOneName = "ScriptableObjects/" + soImproverOneName;
+
+                ScriptableImprovement si = Resources.Load<ScriptableImprovement>(soImproverOneName);
+                BaseImprovement bi = si.InitializeImprovement(gameObject);
+                groundImproves[0] = bi;
+                bi.ApplyImprovemenetEffect();
+
+                soImproverOneName = (string)loadedData["soImproverOneName"];
+            }
+
+            if (soImproverTwoName != "")
+            {
+                // load Improvement Two
+                soImproverTwoName = "ScriptableObjects/" + soImproverTwoName;
+
+                ScriptableImprovement si = Resources.Load<ScriptableImprovement>(soImproverTwoName);
+                BaseImprovement bi = si.InitializeImprovement(gameObject);
+                groundImproves[1] = bi;
+                bi.ApplyImprovemenetEffect();
+
+                soImproverTwoName = (string)loadedData["soImproverTwoName"];
+            }
+
+            if (loadedData["soPlantName"] != null)
+            {
+                // Create growing plant
+                Destroy(plantObject.transform.GetChild(0).gameObject);
+                var plant = Instantiate(growthPlant, plantObject.transform) as PlantController;
+                plant.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+                plant.SetDataToLoad((object)loadedData["soPlantName"]);
+            }
 
             return;
         }

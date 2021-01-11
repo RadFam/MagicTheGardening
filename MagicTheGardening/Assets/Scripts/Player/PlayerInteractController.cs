@@ -50,6 +50,9 @@ namespace PlayerController
         {
             interactTarget = inter.transform;
             interactObject = inter;
+            
+            string nameObj = inter.gameObject.name;
+            //Debug.Log("Interact object name: " + nameObj);
         }
 
         public void MakeIntraction()
@@ -75,7 +78,7 @@ namespace PlayerController
 
                 if (PAC.GetAction == Actions.NoAction)
                 {
-                    if (interactObject.gameObject.name == "Ground")
+                    if (interactObject.gameObject.name == "Ground") // Remake
                     {
                         interactObject.Connect(TypeOfInteraction.GroundGetProduct, this.gameObject); // Make SO "GroundGetProduct"
                     }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   growthStages: 4
   plantName: RedFlower
+  soLoadName: RedFlowerStages
   plantView:
   - {fileID: 4300000, guid: 56203e8ed01d7a440ae8244cce203784, type: 3}
   - {fileID: 4300000, guid: 7ae7f742d4b874c4d813dbbf758e703b, type: 3}

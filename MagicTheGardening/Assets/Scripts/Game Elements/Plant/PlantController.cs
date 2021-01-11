@@ -220,6 +220,12 @@ namespace GameElement
             currentStage = (int)repackData[3];
             string plantData = "ScriptableObjects/" + (string)repackData[4];
 
+            Debug.Log("groundType: " + groundType.ToString());
+            Debug.Log("growthTimer: " + growthTimer.ToString());
+            Debug.Log("canTakeProds: " + canTakeProds);
+            Debug.Log("currentStage: " + currentStage.ToString());
+            Debug.Log("plantData link: " + plantData);
+
             // Load scriptable object of plantGrowthData
             plantGrowthData = Resources.Load<PlantGrowthCycle>(plantData);
             plantStages = plantGrowthData.growthStages;

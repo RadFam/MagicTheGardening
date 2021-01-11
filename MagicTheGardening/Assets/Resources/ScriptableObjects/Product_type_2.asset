@@ -17,4 +17,4 @@ MonoBehaviour:
     \u0434\u043B\u044F \u0440\u043E\u0441\u0442\u0430"
   productSprite: {fileID: 21300000, guid: 77d51c4203497cd46b7de0aeb01772e1, type: 3}
   cost: 10
-  plantToGrow: {fileID: 11400000, guid: f52ceaf784f15de4d90329ea8ef4cf28, type: 2}
+  plantToGrow: {fileID: 11400000, guid: 556c1d4692b01294b8ea2ec31ebc2457, type: 2}

@@ -24,7 +24,8 @@ namespace GameControllers
             foreach (KeyValuePair<TypeOfInteraction, Interaction> kvp in ReactionsList)
             {
                 kvp.Value.parentObj = this.gameObject;
-                kvp.Value.Init();
+                kvp.Value.SetParent(this.gameObject);
+                kvp.Value.Init(this.gameObject.name);
             }
         }
 
@@ -35,7 +36,7 @@ namespace GameControllers
                 if (interact == kvp.Key)
                 {
                     kvp.Value.clientObj = go;
-                    kvp.Value.React();
+                    kvp.Value.React(this.gameObject.name);
                     return;
                 }
             }

@@ -72,20 +72,35 @@ namespace PlayerController
         }
 
         public void SkipDay()
-        {
-            TttE.Raise();
-            dayCnt++;
-            Debug.Log("NEW DAY COMES: " + dayCnt.ToString());
+        {   
+            StartCoroutine(SkipDayCor());
         }
 
         public void SaveAllData()
         {
+            GlobalSaveSystem gsd = FindObjectOfType<GlobalSaveSystem>();
+            gsd.Save("InnerDataSav");
             Debug.Log("DATA WAS SAVED");
         }
 
         public void LoadAllData()
         {
+            GlobalSaveSystem gsd = FindObjectOfType<GlobalSaveSystem>();
+            gsd.Load("InnerDataSav");
             Debug.Log("DATA WAS LOADED");
+        }
+
+        IEnumerator SkipDayCor()
+        {
+            DayNightFaderScript dnfs = FindObjectOfType<DayNightFaderScript>();
+
+            yield return StartCoroutine(dnfs.FadeIn());
+
+            TttE.Raise();
+            dayCnt++;
+            Debug.Log("NEW DAY COMES: " + dayCnt.ToString());
+
+            yield return StartCoroutine(dnfs.FadeOut());
         }
     }
 }

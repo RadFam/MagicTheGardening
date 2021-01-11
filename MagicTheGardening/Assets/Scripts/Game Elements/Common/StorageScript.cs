@@ -240,6 +240,7 @@ namespace GameElement
             }
             
             //.........
+            //Debug.Log("Storage was captured");
             return myActualStorage;
         }
 

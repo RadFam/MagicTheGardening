@@ -10,11 +10,13 @@ namespace PlayerController
     {
 
         public Camera myCam;
+        bool clickOnOff;
 
         // Use this for initialization
         void Start()
         {
             myCam = GameObject.Find("Main Camera").GetComponent<Camera>();
+            clickOnOff = true;
         }
 
         // Update is called once per frame
@@ -31,6 +33,11 @@ namespace PlayerController
             }
         }
 
+        public void ClickOnOff()
+        {
+            clickOnOff = !clickOnOff;
+        }
+
         private bool ReactWithInteraction()
         {
             RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
@@ -39,9 +46,9 @@ namespace PlayerController
                 Interactible inter = hit.transform.GetComponent<Interactible>();
                 if (inter == null) continue;
 
-                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && clickOnOff)
                 {
-                    Debug.Log("Was click to move and interact");
+                    //Debug.Log("Was click to move and interact");
                     GetComponent<PlayerInteractController>().Interact(inter);
                 }
                 return true;
@@ -60,7 +67,7 @@ namespace PlayerController
             RaycastHit hit;
             if (Physics.Raycast(GetMouseRay(), out hit))
             {
-                if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+                if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject() && clickOnOff)
                 {
                     GetComponent<PlayerMoveControl>().StartMoveAction(hit.point);
                 }

@@ -56,7 +56,7 @@ namespace GameElement
             plowedChar[2] = (int)groundGraphics.unplowedSpeed_Max[groundType].y;
             wateredChar[1] = (int)groundGraphics.unwateredSpeed_Max[groundType].x;
             wateredChar[2] = (int)groundGraphics.unwateredSpeed_Max[groundType].y;
-            
+
             //
             fertilizedChar[1] = (int)groundGraphics.unfertilizedSpeed_Max[groundType].x;
             fertilizedChar[2] = (int)groundGraphics.unfertilizedSpeed_Max[groundType].y;
@@ -171,47 +171,56 @@ namespace GameElement
 
         void DefertilizeGround()
         {
-            isFertilized = false;
+            if (isFertilized)
+            {
+                isFertilized = false;
 
-            fertilizedChar[0] = 0;
-            fertilizedChar[1] = 0;
-            fertilizedChar[2] = 0;
+                fertilizedChar[0] = 0;
+                fertilizedChar[1] = 0;
+                fertilizedChar[2] = 0;
 
-            groundFertilizer.DeactivateImprovement();
-            groundFertilizer = null;
+                groundFertilizer.DeactivateImprovement();
+                groundFertilizer = null;
 
-            Destroy(fertilizerObject.GetComponent<MeshFilter>()); // Delete mesh of fertilizer
-            Destroy(fertilizerObject.GetComponent<MeshRenderer>()); // Delete material of fertilizer
+                Destroy(fertilizerObject.GetComponent<MeshFilter>()); // Delete mesh of fertilizer
+                Destroy(fertilizerObject.GetComponent<MeshRenderer>()); // Delete material of fertilizer
 
-            soFertilizerName = "";
+                soFertilizerName = "";
+            }
         }
 
         void DeimproveOneGround()
         {
-            isImproved_1 = false;
+            if (isImproved_1)
+            {
+                isImproved_1 = false;
 
-            improvedOneChar[0] = 0;
-            improvedOneChar[1] = 0;
-            improvedOneChar[2] = 0;
+                improvedOneChar[0] = 0;
+                improvedOneChar[1] = 0;
+                improvedOneChar[2] = 0;
 
-            groundImproves[1].DeactivateImprovement();
-            groundImproves.Remove(1);
+                groundImproves[1].DeactivateImprovement();
+                groundImproves.Remove(1);
 
-            soImproverOneName = "";
+                soImproverOneName = "";
+            }
         }
 
         void DeimproveTwoGround()
         {
-            isImproved_2 = false;
+            if (isImproved_2)
+            {
+                isImproved_2 = false;
 
-            improvedTwoChar[0] = 0;
-            improvedTwoChar[1] = 0;
-            improvedTwoChar[2] = 0;
+                improvedTwoChar[0] = 0;
+                improvedTwoChar[1] = 0;
+                improvedTwoChar[2] = 0;
 
-            groundImproves[2].DeactivateImprovement();
-            groundImproves.Remove(2);
+                groundImproves[2].DeactivateImprovement();
+                groundImproves.Remove(2);
 
-            soImproverTwoName = "";
+                soImproverTwoName = "";
+            }
         }
 
         // Remove Plant from ground
@@ -234,7 +243,10 @@ namespace GameElement
                 //DeimproveTwoGround();
             }
 
-            Destroy(plantObject.transform.GetChild(0).gameObject);
+            if (plantObject.transform.childCount > 0)
+            {
+                Destroy(plantObject.transform.GetChild(0).gameObject);
+            }
 
             soPlantName = "";
         }
@@ -356,7 +368,7 @@ namespace GameElement
 
                     groundImproves.Add(1, bI);
                     soImproverOneName = bI.improveSC.soLoadName;
-                    return true;   
+                    return true;
                 }
 
                 if (improvedTwoChar[0] == 0)
@@ -458,7 +470,7 @@ namespace GameElement
             myActualBoilerContent.Add("improvedTwoChar", (object)improvedTwoChar);
 
             //myActualBoilerContent.Add("soPlantName", (object)soPlantName);
-            if (plantObject.transform.GetChild(0).gameObject == null)
+            if (plantObject.transform.childCount == 0)
             {
                 myActualBoilerContent.Add("soPlantName", (object)null);
             }
@@ -475,11 +487,25 @@ namespace GameElement
 
         public void RestoreObject(object obj)
         {
+            // Celear ground at all !
+            ClearizeGround();
+
             //.........
             Dictionary<string, object> loadedData = obj as Dictionary<string, object>;
 
             isPloweed = (bool)loadedData["isPloweed"];
             isWatered = (bool)loadedData["isWatered"];
+
+            if (isPloweed)
+            {
+                AddPlowing();
+            }
+
+            if (isWatered)
+            {
+                AddWaterizing();
+            }
+
             isPlanted = (bool)loadedData["isPlanted"];
             isFertilized = (bool)loadedData["isFertilized"];
             isImproved_1 = (bool)loadedData["isImproved_1"];
@@ -548,7 +574,10 @@ namespace GameElement
             if (loadedData["soPlantName"] != null)
             {
                 // Create growing plant
-                Destroy(plantObject.transform.GetChild(0).gameObject);
+                if (plantObject.transform.childCount > 0)
+                {
+                    Destroy(plantObject.transform.GetChild(0).gameObject);
+                }
                 var plant = Instantiate(growthPlant, plantObject.transform) as PlantController;
                 plant.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
                 plant.SetDataToLoad((object)loadedData["soPlantName"]);

@@ -118,9 +118,73 @@ namespace GameUI
             
         }
 
-        public void ShowPlayerSales()
+        public void ShowPlayerBoiler()
         {
-        
+            // May be this is not nessesary function
+        }
+
+        public void ShowPlayerSales(ref StorageScript ssc_1, ref StorageScript ssc_2, StorageTypes stType)
+        {
+            exchangePrefab = GameObject.Find("ExchangePanel") as GameObject;
+            exchangePrefab.gameObject.SetActive(true);
+
+            SSc_obj = ssc_1;
+            SSc_subj = ssc_2;
+
+            salesPrefab = GameObject.Find("SalesStoragePanel").GetComponent<SalesmanStorageUIController>();
+            playerPrefab =  GameObject.Find("PlayerStoragePanel").GetComponent<PlayerStorageUIController>();
+
+            objPrefab = salesPrefab; // Make the SalesUI script
+            subjPrefab = playerPrefab;
+
+            Vector3 obj_pos = cam.WorldToScreenPoint(SSc_obj.gameObject.transform.position);
+            Vector3 subj_pos = cam.WorldToScreenPoint(SSc_subj.gameObject.transform.position);
+
+            Vector2 deltaObj = new Vector2(0.0f, 0.0f);
+            Vector2 deltaSubj = new Vector2(0.0f, 0.0f);
+
+            if (obj_pos.x <= subj_pos.x && obj_pos.y >= subj_pos.y)
+            {
+                deltaObj = new Vector2(0.2f, 0.8f);
+                deltaSubj = new Vector2(0.7f, 0.2f);
+            }
+            else if (obj_pos.x > subj_pos.x && obj_pos.y >= subj_pos.y)
+            {
+                deltaObj = new Vector2(0.8f, 0.8f);
+                deltaSubj = new Vector2(0.3f, 0.2f); // (!!!!)
+            }
+            else if (obj_pos.x <= subj_pos.x && obj_pos.y < subj_pos.y)
+            {
+                deltaObj = new Vector2(0.2f, 0.2f);
+                deltaSubj = new Vector2(0.7f, 0.8f);
+            }
+            else if (obj_pos.x > subj_pos.x && obj_pos.y < subj_pos.y)
+            {
+                deltaObj = new Vector2(0.8f, 0.2f);
+                deltaSubj = new Vector2(0.3f, 0.8f);
+            }
+            
+            playerPrefab.gameObject.SetActive(true);
+            playerPrefab.SetSelfScaling(deltaSubj);
+
+            int tmp = SSc_subj.GetStorageLength();
+            
+            for (int i = 0; i < tmp; ++i)
+            {
+                playerPrefab.SetAnotherDDElement(SSc_subj.GetStorageProduct(i).productSprite, SSc_subj.GetStorageProduct(i).productName, SSc_subj.GetStorageProductVol(i));
+            }
+
+            if (stType == StorageTypes.Salesman)
+            {
+                salesPrefab.gameObject.SetActive(true);
+                salesPrefab.SetSelfScaling(deltaObj);
+
+                tmp = SSc_obj.GetStorageLength();
+                for (int i = 0; i < tmp; ++i)
+                {
+                    salesPrefab.SetAnotherDDElement(SSc_obj.GetStorageProduct(i).productSprite, SSc_obj.GetStorageProduct(i).productName, SSc_obj.GetStorageProductVol(i));
+                }
+            }
         }
 
         public bool ExchangeStorages(string product, int fromSt, int toSt) // 1 - object menu, 2 - subject menu
@@ -148,6 +212,26 @@ namespace GameUI
                     res = true;
                 }
                 SSc_obj.AddProduct(product, prNum);
+            }
+
+            return res;
+        }
+
+        public bool TradeStorages(string product, int fromSt, int toSt, int prodVol)
+        {
+            bool res = false;
+
+            if (fromSt == 1 && toSt == 2)
+            {
+                SSc_obj.RemoveProduct(product, prodVol);
+                SSc_subj.AddProduct(product, prodVol);
+                res = true;
+            }
+            if (fromSt == 2 && toSt == 1)
+            {
+                SSc_subj.RemoveProduct(product, prodVol);
+                SSc_obj.AddProduct(product, prodVol);
+                res = true;
             }
 
             return res;

@@ -18,6 +18,10 @@ namespace GameUI
 		int volFull;
 		int maxVol; // How much is in the 
 		int maxCost;
+
+		int fromSt;
+		int toSt;
+		string prodName;
         // Use this for initialization
         void Start()
         {
@@ -35,11 +39,15 @@ namespace GameUI
 			ShowParams();
 		}
 
-		public void SetInitParams(int maxGold, int maxVol, int costGold)
+		public void SetInitParams(int maxGold, int maxVol, int costGold, int frSt, int tSt, string product)
 		{
 			costOne = costGold;
 			mySlide.minValue = 0;
 			mySlide.maxValue = Mathf.Min(maxVol, maxGold/costGold);
+
+			fromSt = frSt;
+			toSt = tSt;
+			prodName = product;
 		}
 		void ShowParams()
 		{
@@ -52,7 +60,8 @@ namespace GameUI
 
 		public void OnOkButtonClick()
 		{
-			
+			FindObjectOfType<ExchangeUIController>().TradeProceedStorages(prodName, volFull, costFull, fromSt, toSt);
+			gameObject.SetActive(false);
 		}
     }
 }

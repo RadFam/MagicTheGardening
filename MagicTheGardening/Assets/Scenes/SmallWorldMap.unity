@@ -815,7 +815,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330b9f5d402d65b4a8f78b08a0387e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cityName: PlainCityTwo
+  cityName: CityTwoLocation
   cityNum: 3
 --- !u!1 &831138401
 GameObject:
@@ -1144,7 +1144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330b9f5d402d65b4a8f78b08a0387e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cityName: PlainCityOne
+  cityName: CityOneLocation
   cityNum: 2
 --- !u!1 &1760675314
 GameObject:

@@ -16,12 +16,17 @@ namespace GameUI
         public ChestStorageUIController chestPrefab;
         public BoilerStorageUIController boilerPrefab;
         public SalesmanStorageUIController salesPrefab;
+
+        public TradePanelUIController tradePrefab;
         public GameObject exchangePrefab;
 
         public AbstractStorageUIController objPrefab;
         public AbstractStorageUIController subjPrefab;
 
         public Button exitButton;
+
+        public bool tradeAnswer;
+        public bool tradeAnswer_2;
 
         StorageScript SSc_obj;
         StorageScript SSc_subj;
@@ -30,6 +35,8 @@ namespace GameUI
         void Start()
         {
             cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+            tradeAnswer = false;
+            tradeAnswer_2 = false;
         }
 
         public void OnCloseStorages()
@@ -125,7 +132,8 @@ namespace GameUI
 
         public void ShowPlayerSales(ref StorageScript ssc_1, ref StorageScript ssc_2, StorageTypes stType)
         {
-            exchangePrefab = GameObject.Find("ExchangePanel") as GameObject;
+            // Do not need
+            //exchangePrefab = GameObject.Find("ExchangePanel") as GameObject;
             exchangePrefab.gameObject.SetActive(true);
 
             SSc_obj = ssc_1;
@@ -217,24 +225,51 @@ namespace GameUI
             return res;
         }
 
-        public bool TradeStorages(string product, int fromSt, int toSt, int prodVol)
+        public void TradeStorages(string product, int fromSt, int toSt) // also change money
         {
-            bool res = false;
+            int maxGold = 0;
+            int maxVol = 0;
+            int costGold = 0;
 
             if (fromSt == 1 && toSt == 2)
             {
-                SSc_obj.RemoveProduct(product, prodVol);
-                SSc_subj.AddProduct(product, prodVol);
-                res = true;
+                maxGold = SSc_subj.GetMoneyVol();
+                maxVol = SSc_obj.HasProduct(product);
             }
             if (fromSt == 2 && toSt == 1)
             {
-                SSc_subj.RemoveProduct(product, prodVol);
-                SSc_obj.AddProduct(product, prodVol);
-                res = true;
+                maxGold = SSc_obj.GetMoneyVol();
+                maxVol = SSc_subj.HasProduct(product);
+            }
+            costGold = GlobalGameData.instance.GetProductByName(product).cost;
+
+            tradePrefab.gameObject.SetActive(true);
+            tradePrefab.SetInitParams(maxGold, maxVol, costGold, fromSt, toSt, product);
+        }
+
+        public void TradeProceedStorages(string product, int changeVol, int moneyVol, int fromSt, int toSt)
+        {
+            tradeAnswer_2 = true;
+            if (changeVol == 0)
+            {
+                tradeAnswer_2 = false;
+            }
+            if (fromSt == 1 && toSt == 2)
+            {
+                SSc_obj.RemoveProduct(product, changeVol);
+                SSc_subj.AddProduct(product, changeVol);
+                SSc_obj.SellProduct(product, changeVol);
+                SSc_subj.BuyProduct(product, changeVol);
+            }
+            if (fromSt == 2 && toSt == 1)
+            {
+                SSc_subj.RemoveProduct(product, changeVol);
+                SSc_obj.AddProduct(product, changeVol);
+                SSc_subj.SellProduct(product, changeVol);
+                SSc_obj.AddProduct(product, changeVol);
             }
 
-            return res;
+            tradeAnswer = true;
         }
     }
 }

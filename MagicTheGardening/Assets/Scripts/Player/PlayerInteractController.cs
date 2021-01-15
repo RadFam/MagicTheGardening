@@ -57,6 +57,8 @@ namespace PlayerController
 
         public void MakeIntraction()
         {
+            Debug.Log("Make interaction");
+            Debug.Log("interactObject: " + interactObject);
             if (interactObject != null)
             {
                 // Do some interaction
@@ -85,6 +87,10 @@ namespace PlayerController
                     if (interactObject.gameObject.name == "Chest")
                     {
                         interactObject.Connect(TypeOfInteraction.ExchangeItem, this.gameObject);
+                    }
+                    if (interactObject.gameObject.name == "SalesmanPlace")
+                    {
+                        interactObject.Connect(TypeOfInteraction.ExtradeItem, this.gameObject);
                     }
                 }
 

@@ -10,7 +10,7 @@ namespace GameControllers
     {
 		public static SceneLoaderScript instance;
 		private int sceneToLoad;
-        List<string> sceneNames = new List<string>{"FarmOneLocation", "SmallWorldMap", "PlainCityOne", "PlainCityTwo"};
+        List<string> sceneNames = new List<string>{"FarmOneLocation", "SmallWorldMap", "CityOneLocation", "CityTwoLocation"};
 		
 		[SerializeField]
 		Image fadeImage;
@@ -19,6 +19,7 @@ namespace GameControllers
 		float fadeInterval;
 		[SerializeField]
 		float fadeAlpha;
+		public string currentSceneName;
 		
 		// Use this for initialization
         void Start()
@@ -33,6 +34,7 @@ namespace GameControllers
 			}
 			sceneToLoad = 0;
 			fadeAlpha = 0.0f;
+			currentSceneName = SceneManager.GetActiveScene().name;
         }
 
 		public void LoadScene(int vol)
@@ -49,6 +51,8 @@ namespace GameControllers
 			{
 				yield return null;
 			}
+
+			currentSceneName = sceneNames[sceneToLoad];
 
 			yield return StartCoroutine(FadeOut());
 		}

@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SmallWorldMap.unity
     guid: 5e916480e8b6b0941b0af93cbdee0e66
+  - enabled: 1
+    path: Assets/Scenes/CityOneLocation.unity
+    guid: 86c507fce7b30e04287bf1307452490a
   m_configObjects: {}

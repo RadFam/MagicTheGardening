@@ -18,6 +18,7 @@ namespace GameUI
 
         Vector3 initPosition;
         Transform initParent;
+        Transform rootParent;
         RectTransform myRectangle;
         public RectTransform MyRect
         {
@@ -49,8 +50,9 @@ namespace GameUI
             dragItem = gameObject;
             initPosition = gameObject.transform.position;
             initParent = gameObject.transform.parent;
+            rootParent = GameObject.Find("Canvas").transform;
 
-            gameObject.transform.SetParent(transform.root);
+            gameObject.transform.SetParent(transform.root); // Here alwas must be a canvas (transform.root)
             gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
         }
@@ -62,7 +64,7 @@ namespace GameUI
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            dragItem = null;
+            //dragItem = null;
 
             if (gameObject.transform.parent == initParent || gameObject.transform.parent == gameObject.transform.root)
             {

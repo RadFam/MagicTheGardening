@@ -17,5 +17,5 @@ MonoBehaviour:
   productDescription: "\u0422\u0435\u0441\u0442\u043E\u0432\u044B\u0439 \u043E\u0431\u044A\u0435\u043A\u0442
     \u0434\u043B\u044F \u043F\u0440\u043E\u0432\u0435\u0440\u043E\u043A"
   productSprite: {fileID: 21300000, guid: 66fa1fdb7644dec498a3c16b19d4d83b, type: 3}
-  cost: 0
+  cost: 15
   plantToGrow: {fileID: 11400000, guid: 556c1d4692b01294b8ea2ec31ebc2457, type: 2}

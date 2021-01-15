@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/CityOneLocation.unity
+- path: Assets/Scenes/FarmOneLocation.unity
   isLoaded: 1
   isActive: 1

@@ -15,4 +15,4 @@ MonoBehaviour:
   productName_Rus: 
   productDescription: 
   productSprite: {fileID: 0}
-  cost: 0
+  cost: 10

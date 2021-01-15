@@ -30,6 +30,8 @@ namespace GameElement
 
         [SerializeField] // Just temporary case, only for game test and test player start
         List<myProductStorage> myStorage;
+        
+        [SerializeField]
         int myMoneyStorage;
         ProductCommon handProduct;
 
@@ -66,6 +68,11 @@ namespace GameElement
             {
                 return 0;
             }
+        }
+
+        public int GetMoneyVol()
+        {
+            return myMoneyStorage;
         }
 
         // Use this for initialization
@@ -115,6 +122,11 @@ namespace GameElement
                     myStorage.RemoveAt(ind);
                 }
             }
+        }
+
+        public void ChangeMoney(int deltaMoney)
+        {
+            myMoneyStorage += deltaMoney;
         }
 
         public void BuyProduct(string productName, int value)

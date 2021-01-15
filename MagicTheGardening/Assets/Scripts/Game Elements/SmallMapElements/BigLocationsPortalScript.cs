@@ -35,13 +35,13 @@ namespace GameElement
 
 		void OnTriggerStay(Collider obj)
 		{
-			Debug.Log("Something in area");
+			//Debug.Log("Something in area");
 			if (playerClose && obj.gameObject.tag == "Player")
 			{
-				Debug.Log("Player in area");
+				//Debug.Log("Player in area");
 				if (!playerIn && myCollider.bounds.Contains(obj.transform.position))
 				{
-					Debug.Log("Player can portalize");
+					//Debug.Log("Player can portalize");
 					// Set signal to controller, that player has reached city
 					playerIn = true;
 					Portalize();

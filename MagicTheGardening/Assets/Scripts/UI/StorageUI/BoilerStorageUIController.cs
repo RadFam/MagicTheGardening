@@ -7,7 +7,7 @@ namespace GameUI
 {
     public class BoilerStorageUIController : AbstractStorageUIController
     {
-        public GameObject microElementPrefab;
+        //public GameObject microElementPrefab;
 
         int cellsWidth;
         int cellsHeight;
@@ -86,12 +86,15 @@ namespace GameUI
             int tmpHeight = (int)(myHeight * 0.9f / cellsHeight);
             int tmpWidth = (int)(myHeight * 0.9f / cellsHeight);
 
+            int tmpCntr = 0;
             foreach (GameObject me in innerElements)
             {
                 LayoutElement le = me.GetComponent<LayoutElement>();
                 le.flexibleHeight = (int)(myHeight * 0.9f / cellsHeight);
                 le.flexibleWidth = (int)(myHeight * 0.9f / cellsWidth);
                 me.GetComponent<StorageSlotScript>().MyAccessory = 1;
+                me.GetComponent<StorageSlotScript>().MyPersonalNum = tmpCntr;
+                tmpCntr++;
             }
         }
 

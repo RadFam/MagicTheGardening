@@ -35,8 +35,9 @@ namespace GameUI
 			volFull = 0;
 			maxVol = 0;
 			maxCost = 0;
+			mySlide.value = 0;
 
-			ShowParams();
+			mySlide.onValueChanged.AddListener(AlterParams);
 		}
 
 		public void SetInitParams(int maxGold, int maxVol, int costGold, int frSt, int tSt, string product)
@@ -44,14 +45,26 @@ namespace GameUI
 			costOne = costGold;
 			mySlide.minValue = 0;
 			mySlide.maxValue = Mathf.Min(maxVol, maxGold/costGold);
+			mySlide.value = 0;
 
 			fromSt = frSt;
 			toSt = tSt;
 			prodName = product;
+
+			ShowParams();
 		}
 		void ShowParams()
 		{
 			volFull = (int)mySlide.value;
+			volText.text = volFull.ToString();
+			oneCostText.text = costOne.ToString();
+			costFull = volFull * costOne;
+			fullCostText.text = costFull.ToString();
+		}
+
+		void AlterParams(float value)
+		{
+			volFull = (int)value;
 			volText.text = volFull.ToString();
 			oneCostText.text = costOne.ToString();
 			costFull = volFull * costOne;

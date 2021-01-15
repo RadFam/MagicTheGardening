@@ -9,7 +9,7 @@ namespace GameUI
     {
 
         //public DragAndDropScript microElementPrefab;
-        public GameObject microElementPrefab;
+        //public GameObject microElementPrefab;
 
         int cellsWidth;
         int cellsHeight;
@@ -108,12 +108,15 @@ namespace GameUI
             int tmpHeight = (int)(myHeight * 0.9f / cellsHeight);
             int tmpWidth = (int)(myHeight * 0.9f / cellsHeight);
 
+            int tmpCntr = 0;
             foreach (GameObject me in innerElements)
             {
                 LayoutElement le = me.GetComponent<LayoutElement>();
                 le.flexibleHeight = (int)(myHeight * 0.9f / cellsHeight);
                 le.flexibleWidth = (int)(myHeight * 0.9f / cellsWidth);
                 me.GetComponent<StorageSlotScript>().MyAccessory = 2;
+                me.GetComponent<StorageSlotScript>().MyPersonalNum = tmpCntr;
+                tmpCntr++;
             }
 
             for (int i = 0; i < cellsHeight; ++i)
@@ -145,6 +148,18 @@ namespace GameUI
 
                 cntr++;
             }
+        }
+
+        public override void CreateOnceMoreDDElement(int cellElement, Sprite spr, string prName)
+        {
+            GameObject ddElement = Instantiate(microElementPrefab, innerElements[cellElement].transform, true) as GameObject;
+
+            ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+            ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+            ddElement.GetComponent<RectTransform>().sizeDelta = glg.cellSize;
+            ddElement.GetComponent<DragScript>().SetImage(spr, prName, 0, 2);
+            ddElements.Add(ddElement.gameObject);
         }
     }
 }

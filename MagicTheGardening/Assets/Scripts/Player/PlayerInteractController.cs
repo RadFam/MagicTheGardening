@@ -57,8 +57,8 @@ namespace PlayerController
 
         public void MakeIntraction()
         {
-            Debug.Log("Make interaction");
-            Debug.Log("interactObject: " + interactObject);
+            //Debug.Log("Make interaction");
+            //Debug.Log("interactObject: " + interactObject);
             if (interactObject != null)
             {
                 // Do some interaction
@@ -100,6 +100,7 @@ namespace PlayerController
                 // And so on....
 
                 interactObject = null;
+                interactTarget = null; // ????
             }
         }
 

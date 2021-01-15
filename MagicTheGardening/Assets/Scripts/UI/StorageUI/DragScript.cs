@@ -38,6 +38,11 @@ namespace GameUI
             myOwnerCode = storageOwn;
         }
 
+        public Sprite GetSprite()
+        {
+            return GetComponent<Image>().sprite;
+        }
+
         public void ResetImage()
         {
             Image spr = GetComponent<Image>();
@@ -52,7 +57,7 @@ namespace GameUI
             initParent = gameObject.transform.parent;
             rootParent = GameObject.Find("Canvas").transform;
 
-            gameObject.transform.SetParent(transform.root); // Here alwas must be a canvas (transform.root)
+            gameObject.transform.SetParent(rootParent); // Here alwas must be a canvas (transform.root)
             gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
         }
@@ -66,7 +71,7 @@ namespace GameUI
         {
             //dragItem = null;
 
-            if (gameObject.transform.parent == initParent || gameObject.transform.parent == gameObject.transform.root)
+            if (gameObject.transform.parent == initParent || gameObject.transform.parent == rootParent) // gameObject.transform.root
             {
                 gameObject.transform.position = initPosition;
                 gameObject.transform.SetParent(initParent);

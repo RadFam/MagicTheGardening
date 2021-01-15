@@ -7,6 +7,7 @@ namespace GameUI
 {
     public class AbstractStorageUIController : MonoBehaviour
     {
+        public GameObject microElementPrefab;
         public virtual void SetSelfScaling(Vector2 centerCoords)
         {
 
@@ -14,6 +15,11 @@ namespace GameUI
         public virtual void SetAnotherDDElement(Sprite spr, string nm, int vol)
         {
 
+        }
+
+        public virtual void CreateOnceMoreDDElement(int cellElement, Sprite spr, string prName)
+        {
+            
         }
     }
 }

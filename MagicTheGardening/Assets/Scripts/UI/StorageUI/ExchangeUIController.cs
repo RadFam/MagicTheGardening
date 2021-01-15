@@ -26,7 +26,10 @@ namespace GameUI
         public Button exitButton;
 
         public bool tradeAnswer;
-        public bool tradeAnswer_2;
+        public bool tradeAnswer_wassell;
+        public bool tradeAnswer_partsell;
+        public bool tradeAnswer_wasprod;
+
 
         StorageScript SSc_obj;
         StorageScript SSc_subj;
@@ -36,7 +39,9 @@ namespace GameUI
         {
             cam = GameObject.Find("Main Camera").GetComponent<Camera>();
             tradeAnswer = false;
-            tradeAnswer_2 = false;
+            tradeAnswer_wassell = false;
+            tradeAnswer_partsell = false;
+            tradeAnswer_wasprod = false;
         }
 
         public void OnCloseStorages()
@@ -44,13 +49,14 @@ namespace GameUI
             playerPrefab.gameObject.SetActive(false);
             chestPrefab.gameObject.SetActive(false);
             boilerPrefab.gameObject.SetActive(false);
-            //salesPrefab.gameObject.SetActive(false);
+            salesPrefab.gameObject.SetActive(false);
 
             exchangePrefab.gameObject.SetActive(false);
         }
 
         public void ShowPlayerChest(ref StorageScript ssc_1, ref StorageScript ssc_2, StorageTypes stType) // player is the Subject(!)
         {
+            cam = GameObject.Find("Main Camera").GetComponent<Camera>();
             exchangePrefab.gameObject.SetActive(true);
 
             SSc_obj = ssc_1;
@@ -133,14 +139,16 @@ namespace GameUI
         public void ShowPlayerSales(ref StorageScript ssc_1, ref StorageScript ssc_2, StorageTypes stType)
         {
             // Do not need
-            //exchangePrefab = GameObject.Find("ExchangePanel") as GameObject;
+            cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+
+            //Debug.Log("Start ShowPlayerSales");
             exchangePrefab.gameObject.SetActive(true);
 
             SSc_obj = ssc_1;
             SSc_subj = ssc_2;
 
-            salesPrefab = GameObject.Find("SalesStoragePanel").GetComponent<SalesmanStorageUIController>();
-            playerPrefab =  GameObject.Find("PlayerStoragePanel").GetComponent<PlayerStorageUIController>();
+            //salesPrefab = GameObject.Find("SalesStoragePanel").GetComponent<SalesmanStorageUIController>();
+            //playerPrefab =  GameObject.Find("PlayerStoragePanel").GetComponent<PlayerStorageUIController>();
 
             objPrefab = salesPrefab; // Make the SalesUI script
             subjPrefab = playerPrefab;
@@ -243,30 +251,53 @@ namespace GameUI
             }
             costGold = GlobalGameData.instance.GetProductByName(product).cost;
 
+            //Debug.Log("maxGold, maxVol, costGold, fromSt, toSt, product : " + maxGold.ToString() + " " + maxVol.ToString() + " " + costGold.ToString() + " " + fromSt.ToString() + " " + toSt.ToString() + " " + product);
+
             tradePrefab.gameObject.SetActive(true);
             tradePrefab.SetInitParams(maxGold, maxVol, costGold, fromSt, toSt, product);
         }
 
         public void TradeProceedStorages(string product, int changeVol, int moneyVol, int fromSt, int toSt)
         {
-            tradeAnswer_2 = true;
+            //Debug.Log("product, changeVol, moneyVol, fromSt, toSt : " + product + " " + changeVol.ToString() + " " + moneyVol.ToString() + " " + fromSt.ToString() + " " + toSt.ToString() + " ");
+
+            tradeAnswer_wassell = true;
+            tradeAnswer_partsell = false;
+            tradeAnswer_wasprod = false;
+
             if (changeVol == 0)
             {
-                tradeAnswer_2 = false;
+                tradeAnswer_wassell = false;
             }
-            if (fromSt == 1 && toSt == 2)
+            if (changeVol > 0 && fromSt == 1 && toSt == 2)
             {
-                SSc_obj.RemoveProduct(product, changeVol);
-                SSc_subj.AddProduct(product, changeVol);
+                //SSc_obj.RemoveProduct(product, changeVol);
+                //SSc_subj.AddProduct(product, changeVol);
+                if (SSc_subj.HasProduct(product) > 0)
+                {
+                    tradeAnswer_wasprod = true;
+                }
                 SSc_obj.SellProduct(product, changeVol);
                 SSc_subj.BuyProduct(product, changeVol);
+                if (SSc_obj.HasProduct(product) > 0)
+                {
+                    tradeAnswer_partsell = true;
+                }
             }
-            if (fromSt == 2 && toSt == 1)
+            if (changeVol > 0 && fromSt == 2 && toSt == 1)
             {
-                SSc_subj.RemoveProduct(product, changeVol);
-                SSc_obj.AddProduct(product, changeVol);
+                //SSc_subj.RemoveProduct(product, changeVol);
+                //SSc_obj.AddProduct(product, changeVol);
+                if (SSc_obj.HasProduct(product) > 0)
+                {
+                    tradeAnswer_wasprod = true;
+                }
                 SSc_subj.SellProduct(product, changeVol);
                 SSc_obj.AddProduct(product, changeVol);
+                if (SSc_subj.HasProduct(product) > 0)
+                {
+                    tradeAnswer_partsell = true;
+                }
             }
 
             tradeAnswer = true;

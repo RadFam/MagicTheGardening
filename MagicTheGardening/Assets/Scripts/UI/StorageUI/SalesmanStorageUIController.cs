@@ -8,7 +8,7 @@ namespace GameUI
     public class SalesmanStorageUIController : AbstractStorageUIController
     {
 
-        public GameObject microElementPrefab;
+        //public GameObject microElementPrefab;
 
         int cellsWidth;
         int cellsHeight;
@@ -30,7 +30,7 @@ namespace GameUI
         List<GameObject> ddElements = new List<GameObject>();
         List<Vector2> ddElementsPositions = new List<Vector2>();
 
-		void Start()
+        void Start()
         {
             cellsHeight = 3;
             cellsWidth = 5;
@@ -64,7 +64,7 @@ namespace GameUI
             ddElements.Clear();
         }
 
-		public override void SetSelfScaling(Vector2 centerCoords)
+        public override void SetSelfScaling(Vector2 centerCoords)
         {
             Vector2 canvasScale = myCanvas.GetComponent<CanvasScaler>().referenceResolution;
             Vector2 canvasSize = new Vector2(myCanvas.GetComponent<RectTransform>().rect.width, myCanvas.GetComponent<RectTransform>().rect.height);
@@ -88,21 +88,24 @@ namespace GameUI
             int tmpHeight = (int)(myHeight * 0.9f / cellsHeight);
             int tmpWidth = (int)(myHeight * 0.9f / cellsHeight);
 
+            int tmpCntr = 0;
             foreach (GameObject me in innerElements)
             {
                 LayoutElement le = me.GetComponent<LayoutElement>();
                 le.flexibleHeight = (int)(myHeight * 0.9f / cellsHeight);
                 le.flexibleWidth = (int)(myHeight * 0.9f / cellsWidth);
                 me.GetComponent<StorageSlotScript>().MyAccessory = 1;
+                me.GetComponent<StorageSlotScript>().MyPersonalNum = tmpCntr;
+                tmpCntr++;
             }
-		}
+        }
 
-		public override void SetAnotherDDElement(Sprite spr, string prName, int prVol)
+        public override void SetAnotherDDElement(Sprite spr, string prName, int prVol)
         {
             if (cntr <= innerElements.Count)
             {
                 GameObject ddElement = Instantiate(microElementPrefab, innerElements[cntr].transform, true) as GameObject;
-                
+
                 ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
                 ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
@@ -112,6 +115,18 @@ namespace GameUI
 
                 cntr++;
             }
+        }
+
+        public override void CreateOnceMoreDDElement(int cellElement, Sprite spr, string prName)
+        {
+            GameObject ddElement = Instantiate(microElementPrefab, innerElements[cellElement].transform, true) as GameObject;
+
+            ddElement.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+            ddElement.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+            ddElement.GetComponent<RectTransform>().sizeDelta = glg.cellSize;
+            ddElement.GetComponent<DragScript>().SetImage(spr, prName, 0, 1);
+            ddElements.Add(ddElement.gameObject);
         }
 
     }

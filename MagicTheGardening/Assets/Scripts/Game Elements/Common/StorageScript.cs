@@ -75,6 +75,16 @@ namespace GameElement
             return myMoneyStorage;
         }
 
+        public void SetMoneyVol(int vol)
+        {
+            myMoneyStorage = vol;
+        }
+
+        public void AddMoneyVol(int vol)
+        {
+            myMoneyStorage += vol;
+        }
+
         // Use this for initialization
         void Start()
         {
@@ -271,6 +281,18 @@ namespace GameElement
             }
 
             return;
+        }
+
+        public void IntersceneSave()
+        {
+            InterSceneStorage ISS = FindObjectOfType<InterSceneStorage>();
+            ISS.SaveStorage(this);
+        }
+
+        public void IntersceneRestore()
+        {
+            InterSceneStorage ISS = FindObjectOfType<InterSceneStorage>();
+            ISS.LoadStorage(this);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using GameElement;
 
 namespace GameControllers
 {
@@ -39,6 +40,14 @@ namespace GameControllers
 
 		public void LoadScene(int vol)
 		{
+			// Check, if we leave the trade/farm/battle location
+			if (currentSceneName != "SmallWorldMap")
+			{
+				// Save player storage
+				StorageScript ssc = GameObject.Find("Player").GetComponent<StorageScript>();
+				ssc.IntersceneSave();
+			}
+
 			sceneToLoad = vol;
 			StartCoroutine(LoadGameScene());
 		}
@@ -53,6 +62,13 @@ namespace GameControllers
 			}
 
 			currentSceneName = sceneNames[sceneToLoad];
+
+			if (currentSceneName != "SmallWorldMap")
+			{
+				// Save player storage
+				StorageScript ssc = GameObject.Find("Player").GetComponent<StorageScript>();
+				ssc.IntersceneRestore();
+			}
 
 			yield return StartCoroutine(FadeOut());
 		}

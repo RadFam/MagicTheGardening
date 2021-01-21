@@ -5,10 +5,11 @@ using PlayerController;
 
 namespace SmallMap
 {
-    public class CityPassScript : MonoBehaviour
+    public class CityPassScript : PortalMainScript
     {
 		[SerializeField]
 		string cityName;
+
 		[SerializeField]
 		int cityNum;
         Collider myCollider;
@@ -46,7 +47,7 @@ namespace SmallMap
 					Debug.Log("City " + cityName + " is reached");
 					playerIn = true;
 					SmallMapPlayerEventController SMPEC = FindObjectOfType<SmallMapPlayerEventController>();
-					SMPEC.SetCityLocation(cityNum);
+					SMPEC.SetCityLocation(cityNum, myDestinationTag);
 
 				}
 				if (!myCollider.bounds.Contains(obj.transform.position))

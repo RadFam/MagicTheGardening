@@ -56,6 +56,7 @@ namespace GameElement
 
                     // Move cookingProduct to Storage
                     SSc.AddProduct(cookingProduct.productName, cookingProductsVal);
+                    OnPotionIsReadyShow();
 
                     isBoiling = false;
                 }
@@ -126,6 +127,7 @@ namespace GameElement
             if (cookingProduct != null)
             {
                 SScc.AddProduct(cookingProduct.productName, cookingProductsVal);
+                OnPotionIsTakenShow();
 
                 cookingProduct = null;
                 cookingProductsVal = 0;
@@ -136,6 +138,38 @@ namespace GameElement
         public void PutIngredient(string prodName, int vol)
         {
             SSc.AddProduct(prodName, vol);
+        }
+
+        void OnPotionIsReadyShow()
+        {
+            GameObject resultShow = null;
+            for (int i = 0; i < transform.childCount; ++i)
+            {
+                if (transform.GetChild(i).gameObject.name == "ResultObject")
+                {
+                    resultShow = transform.GetChild(i).gameObject;
+                    break;
+                }
+            }
+
+            resultShow.SetActive(true);
+            resultShow.GetComponent<AnimatedResultScript>().SetResultSprite(cookingProduct.productSprite);
+        }
+
+        void OnPotionIsTakenShow()
+        {
+            GameObject resultShow = null;
+            for (int i = 0; i < transform.childCount; ++i)
+            {
+                if (transform.GetChild(i).gameObject.name == "ResultObject")
+                {
+                    resultShow = transform.GetChild(i).gameObject;
+                    break;
+                }
+            }
+
+            resultShow.GetComponent<AnimatedResultScript>().RemoveResult();
+            resultShow.SetActive(false);
         }
 
         // Define functions later

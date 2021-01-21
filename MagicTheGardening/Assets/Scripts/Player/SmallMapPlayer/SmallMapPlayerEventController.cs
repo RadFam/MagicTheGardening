@@ -14,18 +14,18 @@ namespace PlayerController
 
         }
 
-        public void SetCityLocation(int locationNum)
+        public void SetCityLocation(int locationNum, PortalNames dest)
 		{
 			SmallMapPlayerMoveController SMPMC = GetComponent<SmallMapPlayerMoveController>();
 			SMPMC.StopMoveAction();
 
-			StartCoroutine(EnterCityCoroutine(locationNum));
+			StartCoroutine(EnterCityCoroutine(locationNum, dest));
 		}
 
-		public IEnumerator EnterCityCoroutine(int loc)
+		public IEnumerator EnterCityCoroutine(int loc, PortalNames dest)
 		{
 			yield return new WaitForSeconds(0.4f);
-			SceneLoaderScript.instance.LoadScene(loc);
+			SceneLoaderScript.instance.LoadScene(loc, dest);
 		}
     }
 }

@@ -6,11 +6,12 @@ using GameControllers;
 
 namespace GameElement
 {
-    public class BigLocationsPortalScript : MonoBehaviour
+    public class BigLocationsPortalScript : PortalMainScript
     {
 		Collider myCollider;
         bool playerClose;
 		bool playerIn;
+
         // Use this for initialization
         void Start()
         {
@@ -65,7 +66,7 @@ namespace GameElement
 		public IEnumerator PortalCoroutine()
 		{
 			yield return new WaitForSeconds(0.4f);
-			SceneLoaderScript.instance.LoadScene(1);
+			SceneLoaderScript.instance.LoadScene(1, myDestinationTag);
 		}
     }
 }

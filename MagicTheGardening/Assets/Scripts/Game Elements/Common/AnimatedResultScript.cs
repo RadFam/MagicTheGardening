@@ -19,25 +19,44 @@ namespace GameElement
 		float deltaRot;
 		float deltaDown;
 
+		float stepRot;
+		float stepDown;
+
 		Vector3 mySpriteInitPos;
+		Quaternion mySpriteInitRot;
 		Vector3 mySpriteCurrPos;
         // Use this for initialization
-        void Start()
+        void Awake()
         {
 			signDown = -1.0f;
 			signRot = 1.0f;
 			deltaRot = 0.0f;
 			deltaDown = 0.0f;
-			mySpriteInitPos = new Vector3(0.0f, 0.0f, 0.0f);
+			maxDeltaRot = 45.0f;
+			maxDeltaDown = 1.0f;
+			speedRot = 50.0f;
+			speedDown = 1.0f;
+			stepRot = 0.0f;
+			stepDown = 0.0f;
+			//mySpriteInitPos = new Vector3(0.0f, 0.0f, 0.0f);
         }
 
 		public void OnEnable()
 		{
 			if (canAnimate)
 			{
+				mySpriteObject = transform.GetChild(0).gameObject;
+
 				mySpriteObject.SetActive(true);
 				mySpriteObject.transform.localEulerAngles = new Vector3(-40.0f, 45.0f, 0.0f);
 				mySpriteObject.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+
+				mySpriteInitPos = mySpriteObject.transform.position;
+				mySpriteInitRot = mySpriteObject.transform.rotation;
+
+				stepRot = 0.0f;
+				stepDown = 0.0f;
+				mySpriteCurrPos = new Vector3(mySpriteObject.transform.position.x, mySpriteObject.transform.position.y + signDown * maxDeltaDown, mySpriteObject.transform.position.z);
 			}
 		}
 
@@ -45,15 +64,25 @@ namespace GameElement
 		{
 			if (canAnimate)
 			{
+				mySpriteObject.transform.position = mySpriteInitPos;
+				mySpriteObject.transform.rotation = mySpriteInitRot;
 				mySpriteObject.SetActive(false);
 			}
 		}
 
 		public void SetResultSprite(Sprite spr)
 		{
+			mySpriteObject = transform.GetChild(0).gameObject;
 			mySprite = spr;
 			mySpriteObject.SetActive(true);
 			mySpriteObject.GetComponent<SpriteRenderer>().sprite = mySprite;
+			mySpriteInitPos = mySpriteObject.transform.position;
+			mySpriteInitRot = mySpriteObject.transform.rotation;
+
+			stepRot = 0.0f;
+			stepDown = 0.0f;
+			mySpriteCurrPos = new Vector3(mySpriteObject.transform.position.x, mySpriteObject.transform.position.y + signDown * maxDeltaDown, mySpriteObject.transform.position.z);
+			Debug.Log("mySpriteCurrPos: " + mySpriteCurrPos);
 
 			canAnimate = true;
 		}
@@ -82,15 +111,20 @@ namespace GameElement
 				if (Mathf.Abs(deltaDown) >= maxDeltaDown)
 				{
 					signDown *= -1.0f;
+					mySpriteCurrPos = new Vector3(mySpriteObject.transform.position.x, mySpriteObject.transform.position.y + 2 * signDown * maxDeltaDown, mySpriteObject.transform.position.z);
+					deltaDown = 0;
+					Debug.Log("mySpriteCurrPos: " + mySpriteCurrPos);
 				}
 
-				mySpriteCurrPos = new Vector3(mySpriteObject.transform.localPosition.x, mySpriteObject.transform.localPosition.y+signDown * speedDown * Time.deltaTime, mySpriteObject.transform.localPosition.z);
-				
-				mySpriteObject.transform.RotateAround(transform.localPosition, transform.up, signRot * speedRot * Time.deltaTime);
-				mySpriteObject.transform.localPosition = Vector3.MoveTowards(mySpriteObject.transform.localPosition, mySpriteCurrPos, signDown * speedDown * Time.deltaTime);
+				stepRot = signRot * speedRot * Time.deltaTime;
+				stepDown = speedDown * Time.deltaTime;
 
-				deltaRot += signRot * speedRot * Time.deltaTime;
-				deltaDown += signDown * speedDown * Time.deltaTime;
+				mySpriteObject.transform.RotateAround(mySpriteObject.transform.position, transform.up, stepRot);
+				mySpriteObject.transform.position = Vector3.MoveTowards(mySpriteObject.transform.position, mySpriteCurrPos, stepDown);
+				Debug.Log("mySpriteObject.transform.position: " + mySpriteObject.transform.position);
+
+				deltaRot += stepRot;
+				deltaDown += stepDown;
 			}
         }
     }

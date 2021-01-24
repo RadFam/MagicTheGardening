@@ -102,8 +102,8 @@ namespace GameUI
 
             FindObjectOfType<ExchangeUIController>().tradeAnswer = false;
 
-            transform.parent.GetComponent<AbstractStorageUIController>().CreateOnceMoreDDElement(myPerconalNum, DragScript.dragItem.GetComponent<DragScript>().GetSprite(), DragScript.dragItem.GetComponent<DragScript>().myProductName);
-            Debug.Log("Tried to instantiate object");
+            //transform.parent.GetComponent<AbstractStorageUIController>().CreateOnceMoreDDElement(myPerconalNum, DragScript.dragItem.GetComponent<DragScript>().GetSprite(), DragScript.dragItem.GetComponent<DragScript>().myProductName);
+            //Debug.Log("Tried to instantiate object");
 
             
             if (!FindObjectOfType<ExchangeUIController>().tradeAnswer_wasprod) // HAS NOT already such product
@@ -154,20 +154,6 @@ namespace GameUI
                 }
             }
             
-
-
-            /*
-            if (FindObjectOfType<ExchangeUIController>().tradeAnswer_2)
-            {
-                DragScript.dragItem.transform.SetParent(gameObject.transform);
-                DragScript.dragItem.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-            }
-            else
-            {
-                // Destroy DragScript object
-                Destroy(DragScript.dragItem);
-            }
-            */
 
         }
     }

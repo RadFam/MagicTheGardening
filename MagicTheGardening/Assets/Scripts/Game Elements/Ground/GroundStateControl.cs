@@ -46,7 +46,7 @@ namespace GameElement
         string soImproverTwoName;
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             groundGraphics = Resources.Load<GroundAllViews>("ScriptableObjects/Ground_GFX");
             groundImproves = new Dictionary<int, BaseImprovement>();
@@ -283,16 +283,18 @@ namespace GameElement
 
                 // Check for Insect and Molerat Damages
                 BaseDamagesControl baseDC = GetComponent<BaseDamagesControl>();
-                bool res = false;
+                int res = 0;
 
                 if (baseDC != null)
                 {
-                    res = baseDC.EvalInsectDamage();
-                    res = baseDC.EvalMoleratDamage();
+                    res = baseDC.EvalForAllDamages();
                 }
 
-                if (res)
+                if (res > 0)
                 {
+                    Debug.Log("DAMAGE BEGINS!!!!");
+                    // Enable script with damage
+                    OnDamageShow(res, ref baseDC);
                     DeplantGround();
                 }
                 else if (isPloweed && isWatered)
@@ -304,10 +306,53 @@ namespace GameElement
             TimeFlowReact();
         }
 
+        void OnDamageShow(int val, ref BaseDamagesControl bdc)
+        {
+            GameObject resultShow = null;
+            for (int i = 0; i < transform.childCount; ++i)
+            {
+                if (transform.GetChild(i).gameObject.name == "ResultObject")
+                {
+                    resultShow = transform.GetChild(i).gameObject;
+                    break;
+                }
+            }
+
+            resultShow.SetActive(true);
+            if (val == 1)
+            {
+                resultShow.GetComponent<AnimatedResultScript>().SetResultSprite(bdc.GetInsectPic);
+            }
+            if (val == 2)
+            {
+                resultShow.GetComponent<AnimatedResultScript>().SetResultSprite(bdc.GetMoleratPic);
+            }
+        }
+
+        void OffDamageShow()
+        {
+            GameObject resultShow = null;
+            for (int i = 0; i < transform.childCount; ++i)
+            {
+                if (transform.GetChild(i).gameObject.name == "ResultObject")
+                {
+                    resultShow = transform.GetChild(i).gameObject;
+                    break;
+                }
+            }
+
+            if (resultShow.activeSelf)
+            {
+                resultShow.GetComponent<AnimatedResultScript>().RemoveResult();
+                resultShow.SetActive(false);
+            }
+        }
+
         public bool AddPlowing()
         {
             isPloweed = true;
             plowedChar[0] = plowedChar[2];
+            OffDamageShow();
 
             if (isWatered)
             {

@@ -73,6 +73,7 @@ namespace GameUI
 
 		public void OnOkButtonClick()
 		{
+			//Debug.Log("volFull: " + volFull.ToString());
 			FindObjectOfType<ExchangeUIController>().TradeProceedStorages(prodName, volFull, costFull, fromSt, toSt);
 			gameObject.SetActive(false);
 		}

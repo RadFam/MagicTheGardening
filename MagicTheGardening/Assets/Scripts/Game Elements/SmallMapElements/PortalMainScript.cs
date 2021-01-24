@@ -11,14 +11,16 @@ public class PortalMainScript : MonoBehaviour {
 	GameObject playerSpawnPlace;
 	//Transform playerInitPosition;
 
-	void Start ()
+	void Awake ()
 	{
+		//Debug.Log("My portal tag: " + myPortalTag + " is loading");
 		playerSpawnPlace = transform.GetChild(0).gameObject;
 		//playerInitPosition = playerSpawnPlace.transform;
 	}
 
 	public Transform PlayerInitSpawn()
 	{
-		return playerSpawnPlace.transform;;
+		//Debug.Log("playerSpawnPlace: " + playerSpawnPlace);
+		return playerSpawnPlace.transform;
 	}
 }

@@ -20,7 +20,7 @@ namespace GameElement
         StorageScript SSc;
 
         // Use this for initialization
-        void Start()
+        void Awake()
         {
             isBoiling = false;
             daysOfBoiling = 0;

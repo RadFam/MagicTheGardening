@@ -73,6 +73,7 @@ namespace GameControllers
             {
                 if (PMS.myPortalTag == destPortal)
                 {
+                    //Debug.Log("PMS.myPortalTag: " + PMS.myPortalTag);
                     player.GetComponent<NavMeshAgent>().Warp(PMS.PlayerInitSpawn().position);
                     player.transform.rotation = PMS.PlayerInitSpawn().rotation;
                     break;

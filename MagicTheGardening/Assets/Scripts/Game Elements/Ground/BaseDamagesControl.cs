@@ -24,6 +24,16 @@ namespace GameElement
             set { decreaseMoleratFactor = value; }
         }
 
+        public Sprite GetInsectPic
+        {
+            get {return baseDamagesProbs.insectDamage;}
+        }
+
+        public Sprite GetMoleratPic
+        {
+            get {return baseDamagesProbs.moleratDamage;}
+        }
+
         public int GroundType
         {
             get { return groundType; }
@@ -31,9 +41,9 @@ namespace GameElement
         }
 
         // Use this for initialization
-        void Start()
+        void Awake()
         {
-            baseDamagesProbs = Resources.Load<BaseDamageGround>("ScriptObjects/Ground_Damage");
+            baseDamagesProbs = Resources.Load<BaseDamageGround>("ScriptableObjects/Ground_Damage");
             decreaseInsectFactor = 1.0f;
             decreaseMoleratFactor = 1.0f;
             groundType = GetComponent<GroundStateControl>().groundType;
@@ -67,17 +77,17 @@ namespace GameElement
             decreaseMoleratFactor = 1.0f;
         }
 
-        public bool EvalForAllDamages()
+        public int EvalForAllDamages() // 0 - none, 1 - insect, 2 - molerate
         {
             if (EvalInsectDamage())
             {
-                return true;
+                return 1;
             }
             if (EvalMoleratDamage())
             {
-                return true;
+                return 2;
             }
-            return false;
+            return 0;
         }
     }
 }

@@ -286,6 +286,7 @@ namespace GameElement
         public void IntersceneSave()
         {
             InterSceneStorage ISS = FindObjectOfType<InterSceneStorage>();
+            //Debug.Log("ISS this: " + ISS);
             ISS.SaveStorage(this);
         }
 

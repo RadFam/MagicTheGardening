@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 31544266}
   - component: {fileID: 31544267}
   - component: {fileID: 31544268}
+  - component: {fileID: 31544269}
   m_Layer: 0
   m_Name: SalesmanPlace
   m_TagString: Untagged
@@ -197,6 +198,19 @@ MonoBehaviour:
   toi: 07000000
   inter:
   - {fileID: 11400000, guid: 358e32201b580e44e8de8f770d014a13, type: 2}
+--- !u!114 &31544269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31544264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55939d9fdb1815b43aaf8223b57b9192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  salesmanAssort: {fileID: 0}
 --- !u!1001 &321770515
 PrefabInstance:
   m_ObjectHideFlags: 0

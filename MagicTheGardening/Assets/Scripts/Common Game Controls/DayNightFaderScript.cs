@@ -19,6 +19,8 @@ namespace GameControllers
 		PlayerClickControl PCC;
 		PlayerMoveControl PMC;
 		ButtonEnableUIController BEUIC;
+
+		public int daysPassed;
         // Use this for initialization
         void Start()
         {
@@ -26,6 +28,8 @@ namespace GameControllers
 			PCC = FindObjectOfType<PlayerClickControl>();
 			PMC = FindObjectOfType<PlayerMoveControl>();
 			BEUIC = FindObjectOfType<ButtonEnableUIController>();
+
+			daysPassed = 0;
         }
 
         public void MakeDayNightFading()
@@ -74,6 +78,8 @@ namespace GameControllers
 			PCC.ClickOnOff();
 			BEUIC.BlockDeblockAllButtons();
 			transp = 0.0f;
+
+			daysPassed++;
 		}
 
 		public IEnumerator FadeAll()

@@ -33,6 +33,9 @@ namespace GameElement
         
         [SerializeField]
         int myMoneyStorage;
+
+        [SerializeField]
+        int maxStorageVolume;
         ProductCommon handProduct;
 
         public ProductCommon OnHand
@@ -86,7 +89,7 @@ namespace GameElement
         }
 
         // Use this for initialization
-        void Start()
+        void Awake()
         {
             //myStorage = new List<myProductStorage>(); // It is just temporary
             myMoneyStorage = 0;
@@ -104,8 +107,11 @@ namespace GameElement
             }
             else
             {
-                myProductStorage mPS = new myProductStorage (GlobalGameData.instance.GetProductByName(productName), value);
-                myStorage.Add(mPS);
+                if (myStorage.Count < maxStorageVolume)
+                {
+                    myProductStorage mPS = new myProductStorage (GlobalGameData.instance.GetProductByName(productName), value);
+                    myStorage.Add(mPS);
+                }
             }
         }
 
@@ -256,6 +262,7 @@ namespace GameElement
 
             Dictionary<string, int> myActualStorage = new Dictionary<string, int>();
             myActualStorage.Add("Money", myMoneyStorage);
+            myActualStorage.Add("MaxStorageVolume", maxStorageVolume);
             for (int i = 0; i < myStorage.Count; ++i)
             {
                 myActualStorage.Add(myStorage[i].product.productName, myStorage[i].count);
@@ -272,9 +279,10 @@ namespace GameElement
             Dictionary<string, int> myActualStorage = obj as Dictionary<string, int>;
 
             myMoneyStorage = myActualStorage["Money"];
+            maxStorageVolume = myActualStorage["MaxStorageVolume"]; 
             foreach (KeyValuePair<string, int> keyValue in myActualStorage)
             {
-                if (keyValue.Key != "Money")
+                if (keyValue.Key != "Money" && keyValue.Key != "MaxStorageVolume")
                 {
                     AddProduct(keyValue.Key, keyValue.Value);
                 }
